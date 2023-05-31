@@ -1,7 +1,11 @@
 import 'package:legendary/src/types.dart';
 
 abstract class BaseLegendaryClient {
-  Future<void> auth(String authenticationToken);
+  Future<void> setLogin(String code, {
+    String? sid,
+    String? token,
+  });
+  Future<void> deleteLogin();
   Future<Status?> status();
   Future<List<Game>?> list();
   Future<List<Game>?> listInstalled();
