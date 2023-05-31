@@ -11,9 +11,9 @@ void main() async {
 
   var client = LegendaryClient(legendaryPath: line);
   var status = await client.status();
-  print("Account: ${status?.account}");
-  print("Games available: ${status?.gamesAvailable}");
-  print("Games installed: ${status?.gamesInstalled}");
-  print("EGL Sync Enabled: ${status?.eglSyncEnabled}");
-  print("Config directory: ${status?.configDirectory}");
+  print("Account: ${status.account}");
+  print("Games available: ${status.gamesAvailable}");
+  print("Games installed: ${status.gamesInstalled}");
+  print("EGL Sync Enabled: ${status.eglSyncEnabled}");
+  print("Config directory: ${status.configDirectory}");
 }

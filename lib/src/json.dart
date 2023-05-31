@@ -17,5 +17,6 @@ Future<T> watchStreamForJson<T>({
 
     return transform(obj);
   }
+
   throw "legendary did not return a valid json text";
 }
