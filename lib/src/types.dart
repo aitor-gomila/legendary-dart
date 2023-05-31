@@ -112,8 +112,8 @@ final class Game {
       metadata: metadata,
       appName: appName,
       appTitle: appTitle,
-      baseURLs: baseURLs,
-      dlcs: dlcs,
+      baseURLs: baseURLs as List<String>,
+      dlcs: dlcs as List<String>,
     );
   }
 }
