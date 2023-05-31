@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'dart:convert';
+
 import 'package:legendary/legendary.dart';
+
+import 'client_base.dart';
+import 'json.dart';
 
 class LegendaryClient extends BaseLegendaryClient {
   final String legendaryPath;
@@ -38,31 +42,7 @@ class LegendaryClient extends BaseLegendaryClient {
     var process = await _runLegendaryCommand("list");
     var processStdout = process.stdout.transform(utf8.decoder);
 
-    await for (var line in processStdout) {
-      if (verbose) stdout.write(line);
-
-      // Check if line is json-invalid, and if it is, continue to the next line
-      List<dynamic>? array;
-      try {
-        array = json.decode(line);
-      } catch (error) {
-        // Allowed to continue softly in this case
-        continue;
-      }
-
-      if (array == null) throw "array is null";
-      if (array.isEmpty) throw "array is empty";
-
-      // Check if the json is type-safe
-      List<Game> typedList = array.map(
-        (obj) => Game.fromMap(obj)
-      ).toList();
-
-      // Finally return
-      return typedList;
-    }
-
-    return null;
+    return await watchStreamForJson<List<Game>>(input: processStdout, transform: Game.fromList);
   }
   
   @override
@@ -81,21 +61,8 @@ class LegendaryClient extends BaseLegendaryClient {
   Future<Status?> status() async {
     var process = await _runLegendaryCommand("status");
     var processStdout = process.stdout.transform(utf8.decoder);
-    await for (var line in processStdout) {
-      if(verbose) stdout.write(line);
 
-      Map<String, dynamic>? map;
-
-      try {
-        map = json.decode(line);
-      } catch(_) {
-        continue;
-      }
-      if (map == null) continue;
-
-      return Status.fromMap(map);
-    }
-    return null;
+    return await watchStreamForJson(input: processStdout, transform: Status.fromJson);
   }
   
   @override
@@ -105,8 +72,23 @@ class LegendaryClient extends BaseLegendaryClient {
   }
 
   @override
-  Future<void> auth(String authenticationToken) {
-    // TODO: implement auth
+  Future<void> setLogin(String code, { sid, token }) async {
+    var process = _runLegendaryCommand("auth --disable-webview --token $code");
     throw UnimplementedError();
+  }
+  @override
+  Future<void> deleteLogin() async {
+    var process = await _runLegendaryCommand("auth --disable-webview --delete");
+    var processStdout = process.stdout.transform(utf8.decoder);
+
+    await for (var line in processStdout) {
+      if (verbose) stdout.write(line);
+
+      const String successStatement = "[cli] INFO: User data deleted.";
+      if (!line.contains(successStatement)) {
+        continue;
+      }
+      break;
+    }
   }
 }

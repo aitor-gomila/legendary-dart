@@ -77,23 +77,28 @@ final class Game {
   final List<String> baseURLs;
   final List<String> dlcs;
 
-  factory Game.fromMap(Map<String, dynamic> obj) {
+  static List<Game> fromList(dynamic list) {
+    if (list is! List<dynamic>) throw "list is not a List<dynamic>. it is a ${list.runtimeType}";
+
+    return list.map<Game>((game) {
+      if (game is! Map<String, dynamic>) throw "game is not a Map<String, dynamic>. it is a ${game.runtimeType}";
+
+      return Game.fromJson(game);
+    }).toList();
+  }
+
+  factory Game.fromJson(Map<String, dynamic> obj) {
     var appName = obj["app_name"];
     var appTitle = obj["app_title"];
     var baseURLs = obj["base_urls"];
     var dlcs = obj["dlcs"];
     var metadata = obj["metadata"];
 
-    if (appName.runtimeType != String) throw "app_name is not a String. it is a ${appName.runtimeType}";
-    if (appTitle.runtimeType != String) throw "app_title is not a String. it is a ${appTitle.runtimeType}";
-    if (baseURLs.runtimeType != List) throw "base_urls is not a List. it is a ${baseURLs.runtimeType}";
-    for (var i = 0; i < baseURLs.length; i++) {
-      if (baseURLs[i].runtimeType != String) throw "element number $i at base_urls is not a String. it is a ${baseURLs[i].runtimeType}";
-    }
-    if (dlcs.runtimeType != List) throw "dlcs is not a List";
-    for (var i = 0; i < dlcs.length; i++) {
-      if(dlcs[i].runtimeType != String) throw "element number $i at dlcs is not a String. it is a ${dlcs[i].runtimeType}";
-    }
+    if (appName is! String) throw "app_name is not a String. it is a ${appName.runtimeType}";
+    if (appTitle is! String) throw "app_title is not a String. it is a ${appTitle.runtimeType}";
+    if (baseURLs is! List<String>) throw "base_urls is not a List. it is a ${baseURLs.runtimeType}";
+    if (dlcs is! List<String>) throw "dlcs is not a List. it is a ${dlcs.runtimeType}";
+    if (metadata is! Metadata) throw "metadata is not a Metadata. it is a ${metadata.runtimeType}";
 
     return Game(
       metadata: metadata,
