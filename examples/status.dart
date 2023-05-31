@@ -10,5 +10,10 @@ void main() async {
   if (line == null) return;
 
   var client = LegendaryClient(legendaryPath: line);
-  print((await client.status())?.account);
+  var status = await client.status();
+  print("Account: ${status?.account}");
+  print("Games available: ${status?.gamesAvailable}");
+  print("Games installed: ${status?.gamesInstalled}");
+  print("EGL Sync Enabled: ${status?.eglSyncEnabled}");
+  print("Config directory: ${status?.configDirectory}");
 }
