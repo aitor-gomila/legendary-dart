@@ -20,6 +20,43 @@ final class Image {
   final String type;
   final DateTime uploadedDate;
   final String url;
+
+  factory Image.fromJson(Map<String, dynamic> obj) {
+    var alt = obj["alt"];
+    if (alt is! String) throw "alt is not a String. it is a ${alt.runtimeType}";
+
+    var width = obj["width"];
+    if (width is! int) throw "width is not a int. it is a ${width.runtimeType}";
+
+    var height = obj["height"];
+    if (height is! int) throw "height is not a int. it is a ${height.runtimeType}";
+
+    var md5 = obj["md5"];
+    if (md5 is! String) throw "md5 is not a String. it is a ${md5.runtimeType}";
+
+    var size = obj["size"];
+    if (size is! int) throw "size is not a int. it is a ${size.runtimeType}";
+
+    var type = obj["type"];
+    if (type is! String) throw "type is not a String. it is a ${type.runtimeType}";
+
+    var uploadedDate = obj["uploadedDate"];
+    if (uploadedDate is! String) throw "uploadedDate is not a String. it is a ${uploadedDate.runtimeType}";
+
+    var url = obj["url"];
+    if (url is! String) throw "url is not a String. it is a ${url.runtimeType}";
+
+    return Image(
+      alt: alt,
+      width: width,
+      height: height,
+      md5: md5,
+      size: size,
+      type: type,
+      uploadedDate: DateTime.parse(uploadedDate),
+      url: url,
+    );
+  }
 }
 
 final class Metadata {
@@ -60,6 +97,81 @@ final class Metadata {
   final String status;
   final String title;
   final bool unsearchable;
+
+  factory Metadata.fromJson(Map<String, dynamic> obj) {
+    var applicationId = obj["application_id"];
+    if (applicationId is! String) throw "applicationId is not a String. it is a ${applicationId.runtimeType}";
+    
+    var creationDate = obj["creationDate"];
+    if (creationDate is! String) throw "creationDate is not a String. it is a ${creationDate.runtimeType}";
+    
+    var description = obj["description"];
+    if (description is! String) throw "description is not a String. it is a ${description.runtimeType}";
+
+    var developer = obj["developer"];
+    if (developer is! String) throw "developer is not a String. it is a ${developer.runtimeType}";
+    
+    var developerId = obj["developerId"];
+    if (developerId is! String) throw "developerId is not a String. it is a ${developerId.runtimeType}";
+    
+    var endOfSupport = obj["endOfSupport"];
+    if (endOfSupport is! bool) throw "endOfSupport is not a bool. it is a ${endOfSupport.runtimeType}";
+    
+    var entitlementName = obj["entitlementName"];
+    if (entitlementName is! String) throw "entitlementName is not a String. it is a ${entitlementName.runtimeType}";
+
+    var entitlementType = obj["entitlementType"];
+    if (entitlementType is! String) throw "entitlementType is not a String. it is a ${entitlementType.runtimeType}";
+
+    var id = obj["id"];
+    if (id is! String) throw "id is not a String. it is a ${id.runtimeType}";
+
+    var itemType = obj["itemType"];
+    if (itemType is! String) throw "itemType is not a String. it is a ${itemType.runtimeType}";
+
+    var uncheckedKeyImages = obj["keyImages"];
+    if (uncheckedKeyImages is! List) throw "uncheckedKeyImages is not a List. it is a ${uncheckedKeyImages.runtimeType}";
+
+    var keyImages = uncheckedKeyImages.map((obj) => Image.fromJson(obj)).toList();
+
+    var lastModifiedDate = obj["lastModifiedDate"];
+    if (lastModifiedDate is! String) throw "lastModifiedDate is not a String. it is a ${lastModifiedDate.runtimeType}";
+
+    var namespace = obj["namespace"];
+    if (namespace is! String) throw "namespace is not a String. it is a ${namespace.runtimeType}";
+
+    var requiresSecureAccount = obj["requiresSecureAccount"];
+    if (requiresSecureAccount is! bool) throw "requiresSecureAccount is not a bool. it is a ${requiresSecureAccount.runtimeType}";
+
+    var status = obj["status"];
+    if (status is! String) throw "status is not a String. it is a ${status.runtimeType}";
+
+    var title = obj["title"];
+    if (title is! String) throw "title is not a String. it is a ${title.runtimeType}";
+
+    var unsearchable = obj["unsearchable"];
+    if (unsearchable is! bool) throw "unsearchable is not a bool. it is a ${unsearchable.runtimeType}";
+
+    return Metadata(
+      applicationId: applicationId,
+      creationDate: DateTime.parse(creationDate),
+      description: description,
+      developer: developer,
+      developerId: developerId,
+      endOfSupport: endOfSupport,
+      entitlementName: entitlementName,
+      entitlementType: entitlementType,
+      id: id,
+      itemType: itemType,
+      keyImages: keyImages,
+      lastModifiedDate: DateTime.parse(lastModifiedDate),
+      namespace: namespace,
+      requiresSecureAccount: requiresSecureAccount,
+      status: status,
+      title: title,
+      unsearchable: unsearchable,
+    );
+  }
 }
 
 final class Game {
@@ -106,10 +218,10 @@ final class Game {
       if (url is! String) throw "url from dlcs is not a String. it is a ${url.runtimeType}";
     }
 
-    if (metadata is! Metadata) throw "metadata is not a Metadata. it is a ${metadata.runtimeType}";
+    if (metadata is! Map<String, dynamic>) throw "metadata is not a Metadata. it is a ${metadata.runtimeType}";
 
     return Game(
-      metadata: metadata,
+      metadata: Metadata.fromJson(metadata),
       appName: appName,
       appTitle: appTitle,
       baseURLs: baseURLs as List<String>,
