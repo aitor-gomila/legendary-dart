@@ -96,8 +96,16 @@ final class Game {
 
     if (appName is! String) throw "app_name is not a String. it is a ${appName.runtimeType}";
     if (appTitle is! String) throw "app_title is not a String. it is a ${appTitle.runtimeType}";
-    if (baseURLs is! List<String>) throw "base_urls is not a List. it is a ${baseURLs.runtimeType}";
-    if (dlcs is! List<String>) throw "dlcs is not a List. it is a ${dlcs.runtimeType}";
+    if (baseURLs is! List<dynamic>) throw "base_urls is not a List<dynamic>. it is a ${baseURLs.runtimeType}";
+    for (var url in baseURLs) {
+      if (url is! String) throw "url from base_urls is not a String. it is a ${url.runtimeType}";
+    }
+
+    if (dlcs is! List<dynamic>) throw "dlcs is not a List<dynamic>. it is a ${dlcs.runtimeType}";
+    for (var url in dlcs) {
+      if (url is! String) throw "url from dlcs is not a String. it is a ${url.runtimeType}";
+    }
+
     if (metadata is! Metadata) throw "metadata is not a Metadata. it is a ${metadata.runtimeType}";
 
     return Game(
