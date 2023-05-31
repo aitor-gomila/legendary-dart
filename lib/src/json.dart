@@ -6,20 +6,11 @@ Future<T> watchStreamForJson<T>({
   required T Function(dynamic) transform,
   bool verbose = false
 }) async {
-  dynamic obj;
+  String output = "";
 
   await for (final text in input) {
-    try {
-      obj = jsonDecode(text);
-    } catch (error) {
-      if (verbose) stdout.write(error);
-      continue;
-    }
-
-    if (obj == null) throw "obj is null";
-
-    return transform(obj);
+    output += text;
   }
 
-  throw "legendary did not return a valid json text";
+  return transform(jsonDecode(output));
 }
