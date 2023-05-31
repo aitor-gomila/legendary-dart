@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-Future<T?> watchStreamForJson<T>({
+Future<T> watchStreamForJson<T>({
   required Stream<String> input,
   required T Function(dynamic) transform,
 }) async {

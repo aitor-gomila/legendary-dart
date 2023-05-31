@@ -20,7 +20,7 @@ class LegendaryClient extends BaseLegendaryClient {
   }
 
   @override
-  Future<GameInformation?> info(String appName) {
+  Future<GameInformation> info(String appName) {
     // TODO: implement info
     throw UnimplementedError();
   }
@@ -32,13 +32,13 @@ class LegendaryClient extends BaseLegendaryClient {
   }
   
   @override
-  Stream<String?> launch(String appName) {
+  Stream<String> launch(String appName) {
     // TODO: implement launch
     throw UnimplementedError();
   }
   
   @override
-  Future<List<Game>?> list() async {
+  Future<List<Game>> list() async {
     var process = await _runLegendaryCommand("list");
     var processStdout = process.stdout.transform(utf8.decoder);
 
@@ -46,7 +46,7 @@ class LegendaryClient extends BaseLegendaryClient {
   }
   
   @override
-  Future<List<Game>?> listInstalled() {
+  Future<List<Game>> listInstalled() {
     // TODO: implement listInstalled
     throw UnimplementedError();
   }
@@ -58,7 +58,7 @@ class LegendaryClient extends BaseLegendaryClient {
   }
   
   @override
-  Future<Status?> status() async {
+  Future<Status> status() async {
     var process = await _runLegendaryCommand("status");
     var processStdout = process.stdout.transform(utf8.decoder);
 
