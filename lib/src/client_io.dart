@@ -42,7 +42,7 @@ class LegendaryClient extends BaseLegendaryClient {
     var process = await _runLegendaryCommand("list");
     var processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson<List<Game>>(input: processStdout, transform: Game.fromList);
+    return await watchStreamForJson<List<Game>>(input: processStdout, transform: Game.fromList, verbose: verbose);
   }
   
   @override

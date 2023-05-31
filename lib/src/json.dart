@@ -1,15 +1,18 @@
+import 'dart:io';
 import 'dart:convert';
 
 Future<T> watchStreamForJson<T>({
   required Stream<String> input,
   required T Function(dynamic) transform,
+  bool verbose = false
 }) async {
   dynamic obj;
 
   await for (final text in input) {
     try {
       obj = jsonDecode(text);
-    } catch (_) {
+    } catch (error) {
+      if (verbose) stdout.write(error);
       continue;
     }
 
