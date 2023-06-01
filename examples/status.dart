@@ -1,5 +1,3 @@
-import 'dart:io';
-import 'dart:convert';
 import 'package:legendary/legendary.dart';
 
 void main(argv) async {
