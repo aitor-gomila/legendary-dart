@@ -16,11 +16,11 @@ final class Status {
   factory Status.fromJson(dynamic obj) {
     if (obj is! Map) throw "obj is not a Map. it is a ${obj.runtimeType}";
 
-    var account = obj["account"];
-    var gamesAvailable = obj["games_available"];
-    var gamesInstalled = obj["games_installed"];
-    var eglSyncEnabled = obj["egl_sync_enabled"];
-    var configDirectory = obj["config_directory"];
+    final account = obj["account"];
+    final gamesAvailable = obj["games_available"];
+    final gamesInstalled = obj["games_installed"];
+    final eglSyncEnabled = obj["egl_sync_enabled"];
+    final configDirectory = obj["config_directory"];
 
     if (account is! String) throw "account is not type String. it is ${account.runtimeType}";
     if (gamesAvailable is! int) throw "gamesAvailable is not type int. it is ${gamesAvailable.runtimeType}";

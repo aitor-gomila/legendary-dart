@@ -8,5 +8,5 @@ void main(argv) async {
   if (line == null) return;
 
   final client = LegendaryClient(legendaryPath: line, verbose: true);
-  print(await client.list());
+  print(await client.listInstalled());
 }

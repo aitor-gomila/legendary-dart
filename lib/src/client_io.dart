@@ -39,16 +39,18 @@ class LegendaryClient extends BaseLegendaryClient {
   
   @override
   Future<List<Game>> list() async {
-    var process = await _runLegendaryCommand("list");
-    var processStdout = process.stdout.transform(utf8.decoder);
+    final process = await _runLegendaryCommand("list");
+    final processStdout = process.stdout.transform(utf8.decoder);
 
     return await watchStreamForJson<List<Game>>(input: processStdout, transform: Game.fromList, verbose: verbose);
   }
   
   @override
-  Future<List<Game>> listInstalled() {
-    // TODO: implement listInstalled
-    throw UnimplementedError();
+  Future<List<Game>> listInstalled() async {
+    final process = await _runLegendaryCommand("list-installed");
+    final processStdout = process.stdout.transform(utf8.decoder);
+
+    return await watchStreamForJson<List<Game>>(input: processStdout, transform: Game.fromList, verbose: verbose);
   }
   
   @override
@@ -59,8 +61,8 @@ class LegendaryClient extends BaseLegendaryClient {
   
   @override
   Future<Status> status() async {
-    var process = await _runLegendaryCommand("status");
-    var processStdout = process.stdout.transform(utf8.decoder);
+    final process = await _runLegendaryCommand("status");
+    final processStdout = process.stdout.transform(utf8.decoder);
 
     return await watchStreamForJson(input: processStdout, transform: Status.fromJson);
   }
@@ -73,15 +75,15 @@ class LegendaryClient extends BaseLegendaryClient {
 
   @override
   Future<void> setLogin(String code, { sid, token }) async {
-    var process = _runLegendaryCommand("auth --disable-webview --token $code");
+    final process = _runLegendaryCommand("auth --disable-webview --token $code");
     throw UnimplementedError();
   }
   @override
   Future<void> deleteLogin() async {
-    var process = await _runLegendaryCommand("auth --disable-webview --delete");
-    var processStdout = process.stdout.transform(utf8.decoder);
+    final process = await _runLegendaryCommand("auth --disable-webview --delete");
+    final processStdout = process.stdout.transform(utf8.decoder);
 
-    await for (var line in processStdout) {
+    await for (final line in processStdout) {
       if (verbose) stdout.write(line);
 
       const String successStatement = "[cli] INFO: User data deleted.";

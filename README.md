@@ -12,7 +12,7 @@ First, use `dart pub add legendary` to add the package to your project. Then, im
 import 'package:legendary/legendary.dart';
 
 void main() async {
-    var client = LegendaryClient("absolute/path/to/legendary.exe");
+    final client = LegendaryClient("absolute/path/to/legendary.exe");
     await client.auth("auth_token");
     await client.status();
     await client.list();
