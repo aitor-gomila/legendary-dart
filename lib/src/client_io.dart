@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:legendary/legendary.dart';
 
-import 'client_base.dart';
-import 'json.dart';
+import 'package:legendary/src/client_base.dart';
+import 'package:legendary/src/json.dart';
 
 class LegendaryClient extends BaseLegendaryClient {
   final String legendaryPath;
@@ -32,9 +32,12 @@ class LegendaryClient extends BaseLegendaryClient {
   }
   
   @override
-  Stream<String> launch(String appName) {
-    // TODO: implement launch
-    throw UnimplementedError();
+  Future<StreamGroup<String>> launch(String appName) async {
+    final process = await _runLegendaryCommand("launch $appName");
+    final processStdout = process.stdout.transform(utf8.decoder);
+    final processStderr = process.stderr.transform(utf8.decoder);
+
+    return StreamGroup();
   }
   
   @override
