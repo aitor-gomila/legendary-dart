@@ -32,12 +32,13 @@ class LegendaryClient extends BaseLegendaryClient {
   }
   
   @override
-  Future<StreamGroup<String>> launch(String appName) async {
+  Stream<String> launch(String appName) async* {
     final process = await _runLegendaryCommand("launch $appName");
     final processStdout = process.stdout.transform(utf8.decoder);
     final processStderr = process.stderr.transform(utf8.decoder);
 
-    return StreamGroup();
+    yield* processStdout;
+    yield* processStderr;
   }
   
   @override
