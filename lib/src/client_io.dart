@@ -4,7 +4,10 @@ import 'dart:convert';
 import 'package:legendary/legendary.dart';
 
 import 'package:legendary/src/client_base.dart';
-import 'package:legendary/src/json.dart';
+import 'package:legendary/src/watch_stream.dart';
+import 'package:legendary/src/models/status.dart';
+import 'package:legendary/src/models/game.dart';
+import 'package:legendary/src/models/manifest.dart';
 
 class LegendaryClient extends BaseLegendaryClient {
   final String legendaryPath;
@@ -20,13 +23,15 @@ class LegendaryClient extends BaseLegendaryClient {
   }
 
   @override
-  Future<GameInformation> info(String appName) {
-    // TODO: implement info
-    throw UnimplementedError();
+  Future<Game> info(String appName) async {
+    final process = await _runLegendaryCommand("info $appName");
+    final processStdout = process.stdout.transform(utf8.decoder);
+
+    return await watchStreamForJson(input: processStdout, transform: Game.fromJson);
   }
   
   @override
-  Future<void> install(String appName) {
+  Stream<int> install(String appName) {
     // TODO: implement install
     throw UnimplementedError();
   }
@@ -72,7 +77,7 @@ class LegendaryClient extends BaseLegendaryClient {
   }
   
   @override
-  Future<void> uninstall(String appName) {
+  Stream<int> uninstall(String appName) {
     // TODO: implement uninstall
     throw UnimplementedError();
   }
@@ -80,6 +85,7 @@ class LegendaryClient extends BaseLegendaryClient {
   @override
   Future<void> setLogin(String code, { sid, token }) async {
     final process = _runLegendaryCommand("auth --disable-webview --token $code");
+    // TODO: implement setLogin
     throw UnimplementedError();
   }
   @override

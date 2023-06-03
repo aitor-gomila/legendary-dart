@@ -1,4 +1,5 @@
-import 'package:legendary/src/types.dart';
+import 'package:legendary/src/models/game.dart';
+import 'package:legendary/src/models/status.dart';
 
 abstract class BaseLegendaryClient {
   Future<void> setLogin(String code, {
@@ -9,9 +10,9 @@ abstract class BaseLegendaryClient {
   Future<Status> status();
   Future<List<Game>> list();
   Future<List<Game>> listInstalled();
-  Future<void> install(String appName);
-  Future<GameInformation> info(String appName);
+  Stream<int> install(String appName);
+  Future<Game> info(String appName);
   Stream<String> launch(String appName);
-  Future<void> move(String appName, String path);
-  Future<void> uninstall(String appName);
+  Stream<int> move(String appName, String path);
+  Stream<int> uninstall(String appName);
 }
