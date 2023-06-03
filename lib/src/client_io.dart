@@ -51,7 +51,14 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("list");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson<List<Game>>(input: processStdout, transform: Game.fromList, verbose: verbose);
+    return await watchStreamForJson<List<Game>>(
+      input: processStdout,
+      transform: (obj) {
+        if (obj is! List) throw "obj is not a List. it is a ${obj.runtimeType}";
+        return Game.fromList(obj);
+      },
+      verbose: verbose
+    );
   }
   
   @override
@@ -59,11 +66,18 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("list-installed");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson<List<Game>>(input: processStdout, transform: Game.fromList, verbose: verbose);
+    return await watchStreamForJson<List<Game>>(
+      input: processStdout,
+      transform: (obj) {
+        if (obj is! List) throw "obj is not a List. it is a ${obj.runtimeType}";
+        return Game.fromList(obj);
+      }, 
+      verbose: verbose
+    );
   }
   
   @override
-  Future<void> move(String appName, String path) {
+  Stream<int> move(String appName, String path) {
     // TODO: implement move
     throw UnimplementedError();
   }

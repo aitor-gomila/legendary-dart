@@ -47,15 +47,15 @@ final class Game {
   final Map<String, GameAsset> assetInfos;
   final List<String> baseURLs;
   final Map<String, dynamic> metadata;
-  final String Function(String platform) appVersion;
-  final bool isDLC;
-  final String thirdPartyStore;
-  final String partnerLinkType;
-  final String partnerLinkId;
-  final bool supportsCloudSaves;
-  final bool supportsMacCloudSaves;
-  final String catalogItemId;
-  final String namespace;
+  String? appVersion (String platform) => assetInfos[platform]?.buildVersion;
+  bool get isDLC => metadata["mainGameItem"];
+  String get thirdPartyStore => metadata["customAttributes"]["ThirdPartyManagedApp"]["value"];
+  String get partnerLinkType => metadata["customAttributes"]["partnerLinkType"]["value"];
+  String get partnerLinkId => metadata["customAttributes"]["partnerLinkId"]["value"];
+  bool get supportsCloudSaves => !metadata["customAttributes"]["CloudSaveFolder"];
+  bool get supportsMacCloudSaves => !metadata["customAttributes"]["CloudSaveFolder_MAC"];
+  String get catalogItemId => metadata["id"];
+  String get namespace => metadata["namespace"];
 
   const Game({
     required this.appName,
@@ -63,16 +63,28 @@ final class Game {
     required this.assetInfos,
     required this.baseURLs,
     required this.metadata,
-    required this.appVersion,
-    required this.isDLC,
-    required this.thirdPartyStore,
-    required this.partnerLinkType,
-    required this.partnerLinkId,
-    required this.supportsCloudSaves,
-    required this.supportsMacCloudSaves,
-    required this.catalogItemId,
-    required this.namespace,
   });
+
+  static List<Game> fromList(List<dynamic> list) {
+    return list.map((obj) => Game.fromJson(obj)).toList();
+  }
+
+  factory Game.fromJson(Map<String, dynamic> obj) {
+    final appName = obj["app_name"];
+    final appTitle = obj["app_title"];
+    final assetInfos = obj["asset_infos"];
+    final baseURLs = obj["base_urls"];
+    final metadata = obj["metadata"];
+
+    return Game(
+      appName: appName,
+      appTitle: appTitle,
+      assetInfos: assetInfos,
+      baseURLs: baseURLs,
+      metadata: metadata,
+    );
+  }
+
 }
 
 final class InstalledGame {
