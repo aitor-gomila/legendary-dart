@@ -59,7 +59,8 @@ class LegendaryClient extends BaseLegendaryClient {
       input: processStdout,
       transform: (obj) {
         if (obj is! List) throw "obj is not a List. it is a ${obj.runtimeType}";
-        return Game.fromList(obj);
+
+        return GameList.fromList(obj);
       },
       verbose: verbose
     );
@@ -74,7 +75,7 @@ class LegendaryClient extends BaseLegendaryClient {
       input: processStdout,
       transform: (obj) {
         if (obj is! List) throw "obj is not a List. it is a ${obj.runtimeType}";
-        return Game.fromList(obj);
+        return GameList.fromList(obj);
       }, 
       verbose: verbose
     );

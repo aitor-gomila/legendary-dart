@@ -65,10 +65,6 @@ final class Game {
     required this.metadata,
   });
 
-  static List<Game> fromList(List<dynamic> list) {
-    return list.map((obj) => Game.fromJson(obj)).toList();
-  }
-
   factory Game.fromJson(Map<String, dynamic> obj) {
     final appName = obj["app_name"];
     final appTitle = obj["app_title"];
@@ -85,6 +81,12 @@ final class Game {
     );
   }
 
+}
+
+extension GameList on List<Game> {
+  static List<Game> fromList(List<dynamic> list) {
+    return list.map((obj) => Game.fromJson(obj)).toList();
+  }
 }
 
 final class InstalledGame {
