@@ -9,7 +9,7 @@ final class GameAsset {
 
   // FIXME: dangerous JSON conversion. check types
   factory GameAsset.fromJson(dynamic obj) {
-    if (obj is! Map) throw "obj is not a Map. it is a ${obj.runtimeType}";
+    if (obj is! Map<String, dynamic>) throw "obj is not a Map<String, dynamic>. it is a ${obj.runtimeType}";
 
     final appName = obj["appName"];
     final assetId = obj["assetId"];

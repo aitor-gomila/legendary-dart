@@ -14,7 +14,7 @@ final class Status {
   final String configDirectory;
   
   factory Status.fromJson(dynamic obj) {
-    if (obj is! Map) throw "obj is not a Map. it is a ${obj.runtimeType}";
+    if (obj is! Map<String, dynamic>) throw "obj is not a Map<String, dynamic>. it is a ${obj.runtimeType}";
 
     final account = obj["account"];
     final gamesAvailable = obj["games_available"];

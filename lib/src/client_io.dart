@@ -27,7 +27,11 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("info $appName");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson(input: processStdout, transform: Game.fromJson);
+    return await watchStreamForJson(input: processStdout, transform: (obj) {
+      if (obj is! Map<String, dynamic>) throw "obj is not a Map. it is a ${obj.runtimeType}";
+
+      return Game.fromJson(obj);
+    });
   }
   
   @override
