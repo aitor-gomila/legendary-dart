@@ -9,9 +9,9 @@ abstract class BaseLegendaryClient {
   Future<void> deleteLogin();
   Future<Status> status();
   Future<List<Game>> list();
-  Future<List<Game>> listInstalled();
+  Future<List<InstalledGame>> listInstalled();
   Stream<int> install(String appName);
-  Future<Game> info(String appName);
+  Future<InstalledGame> info(String appName);
   Stream<String> launch(String appName);
   Stream<int> move(String appName, String path);
   Stream<int> uninstall(String appName);

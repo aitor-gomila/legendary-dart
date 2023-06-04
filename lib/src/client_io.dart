@@ -23,7 +23,7 @@ class LegendaryClient extends BaseLegendaryClient {
   }
 
   @override
-  Future<Game> info(String appName) async {
+  Future<InstalledGame> info(String appName) async {
     final process = await _runLegendaryCommand("info $appName");
     final processStdout = process.stdout.transform(utf8.decoder);
 
@@ -32,7 +32,7 @@ class LegendaryClient extends BaseLegendaryClient {
 
         if (json is! Map<String, dynamic>) throw "json is not a Map<String, dynamic>. it is a ${json.runtimeType}";
 
-        return Game.fromJson(json);
+        return InstalledGame.fromJson(json);
       });
   }
   
@@ -69,17 +69,17 @@ class LegendaryClient extends BaseLegendaryClient {
   }
   
   @override
-  Future<List<Game>> listInstalled() async {
+  Future<List<InstalledGame>> listInstalled() async {
     final process = await _runLegendaryCommand("list-installed");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStream<List<Game>>(
+    return await watchStream<List<InstalledGame>>(
       input: processStdout,
       transform: (obj) {
         if (verbose) stdout.write(obj);
         final json = jsonDecode(obj);
         if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
-        return GameList.fromList(json);
+        return InstalledGameList.fromList(json);
       },
       verbose: verbose
     );
