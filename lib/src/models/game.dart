@@ -21,25 +21,12 @@ final class GameAsset {
     if (obj is! Map<String, dynamic>) throw "obj is not a Map<String, dynamic>. it is a ${obj.runtimeType}";
 
     final appName = obj["app_name"];
-    if (appName is! String) throw "appName is not a String. it is a ${appName.runtimeType}";
-
     final assetId = obj["asset_id"];
-    if (assetId is! String) throw "assetId is not a String. it is a ${assetId.runtimeType}";
-
     final buildVersion = obj["build_version"];
-    if (buildVersion is! String) throw "buildVersion is not a String. it is a ${buildVersion.runtimeType}";
-
     final catalogItemId = obj["catalog_item_id"];
-    if (catalogItemId is! String) throw "catalogItemId is not a String. it is a ${catalogItemId.runtimeType}";
-
     final labelName = obj["label_name"];
-    if (labelName is! String) throw "labelName is not a String. it is a ${labelName.runtimeType}";
-
     final namespace = obj["namespace"];
-    if (namespace is! String) throw "namespace is not a String. it is a ${namespace.runtimeType}";
-
     final metadata = obj["metadata"];
-    if (metadata is! Map<String, dynamic>) throw "metadata is not a Map<String, dynamic>. it is a ${metadata.runtimeType}";
 
     return GameAsset(
       appName: appName,
@@ -96,13 +83,8 @@ final class Game {
 
   factory Game.fromJson(Map<String, dynamic> obj) {
     final appName = obj["app_name"];
-    if (appName is! String) throw "appName is not a String. it is a ${appName.runtimeType}";
-
     final appTitle = obj["app_title"];
-    if (appTitle is! String) throw "appTitle is not a String. it is a ${appTitle.runtimeType}";
-
     final assetInfos = obj["asset_infos"];
-    if (assetInfos is! Map) throw "assetInfos is not a Map. it is a ${assetInfos.runtimeType}";
 
     Map<String, GameAsset> typedAssetInfos = assetInfos.map((key, asset) => MapEntry(
       key,
@@ -110,8 +92,6 @@ final class Game {
     ));
 
     final baseURLs = obj["base_urls"];
-    if (baseURLs is! List) throw "baseURLs is not a List. it is a ${baseURLs.runtimeType}";
-
     final metadata = obj["metadata"];
 
     return Game(

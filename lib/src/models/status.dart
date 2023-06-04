@@ -22,12 +22,6 @@ final class Status {
     final eglSyncEnabled = obj["egl_sync_enabled"];
     final configDirectory = obj["config_directory"];
 
-    if (account is! String) throw "account is not type String. it is ${account.runtimeType}";
-    if (gamesAvailable is! int) throw "gamesAvailable is not type int. it is ${gamesAvailable.runtimeType}";
-    if (gamesInstalled is! int) throw "gamesInstalled is not type int. it is ${gamesInstalled.runtimeType}";
-    if (eglSyncEnabled is! bool) throw "eglSyncEnabled is not type bool. it is ${eglSyncEnabled.runtimeType}";
-    if (configDirectory is! String) throw "configDirectory is not type String. it is ${configDirectory.runtimeType}";
-
     return Status(
       account: account,
       gamesAvailable: gamesAvailable,
