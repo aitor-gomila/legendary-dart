@@ -29,4 +29,6 @@ You can also see examples in the [examples directory](https://github.com/aitor-g
 
 ## Additional information
 
-- [Legendary repository from derroid](https://github.com/derroid/legendary)
+- Backend: [Legendary from derroid](https://github.com/derroid/legendary)
+- My Flutter-based: [Epic Games Launcher from aitor-gomila](https://github.com/aitor-gomila/flutter-epic-games-launcher)
+- Inspired by: [Heroic Games Launcher from flavioislima](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher)
