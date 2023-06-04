@@ -27,11 +27,13 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("info $appName");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson(input: processStdout, transform: (obj) {
-      if (obj is! Map<String, dynamic>) throw "obj is not a Map. it is a ${obj.runtimeType}";
+    return await watchStream(input: processStdout, transform: (obj) {
+        final json = jsonDecode(obj);
 
-      return Game.fromJson(obj);
-    });
+        if (json is! Map<String, dynamic>) throw "json is not a Map<String, dynamic>. it is a ${json.runtimeType}";
+
+        return Game.fromJson(json);
+      });
   }
   
   @override
@@ -55,12 +57,12 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("list");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson<List<Game>>(
+    return await watchStream<List<Game>>(
       input: processStdout,
       transform: (obj) {
-        if (obj is! List) throw "obj is not a List. it is a ${obj.runtimeType}";
-
-        return GameList.fromList(obj);
+        final json = jsonDecode(obj);
+        if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
+        return GameList.fromList(json);
       },
       verbose: verbose
     );
@@ -71,12 +73,14 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("list-installed");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson<List<Game>>(
+    return await watchStream<List<Game>>(
       input: processStdout,
       transform: (obj) {
-        if (obj is! List) throw "obj is not a List. it is a ${obj.runtimeType}";
-        return GameList.fromList(obj);
-      }, 
+        if (verbose) stdout.write(obj);
+        final json = jsonDecode(obj);
+        if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
+        return GameList.fromList(json);
+      },
       verbose: verbose
     );
   }
@@ -92,7 +96,7 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("status");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStreamForJson(input: processStdout, transform: Status.fromJson);
+    return await watchStream(input: processStdout, transform: Status.fromJson);
   }
   
   @override

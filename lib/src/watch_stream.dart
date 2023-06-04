@@ -1,8 +1,6 @@
-import 'dart:convert';
-
-Future<T> watchStreamForJson<T>({
+Future<T> watchStream<T>({
   required Stream<String> input,
-  required T Function(dynamic) transform,
+  required T Function(String) transform,
   bool verbose = false
 }) async {
   String output = "";
@@ -11,5 +9,5 @@ Future<T> watchStreamForJson<T>({
     output += text;
   }
 
-  return transform(jsonDecode(output));
+  return transform(output);
 }
