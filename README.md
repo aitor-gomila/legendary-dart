@@ -1,8 +1,12 @@
-`legendary` is a Dart package that lets you interact with [Legendary](https://github.com/derrod/legendary), an epic games launcher for linux, directly from code. It is used in my [Flutter-based Epic Games Launcher]().
+`legendary` is a Dart package that lets you interact with [Legendary](https://github.com/derrod/legendary), an epic games launcher for linux, windows, and mac, directly from code. It is used in my [Flutter-based Epic Games Launcher](https://github.com/aitor-gomila/flutter-epic-games-launcher).
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Authenticate and log out.
+- List your bought games.
+- List your installed games.
+- Install games and import games that are already installed.
+- Everything else that Legendary can do! [Report missing or broken features.](https://github.com/aitor-gomila/legendary-dart/issues/new)
 
 ## Getting started
 
