@@ -13,13 +13,15 @@ import 'package:legendary/legendary.dart';
 
 void main() async {
     final client = LegendaryClient("absolute/path/to/legendary.exe");
-    await client.auth("auth_token");
+    await client.setLogin("auth_token");
     await client.status();
     await client.list();
 }
 ```
 
 You can see the types in the [github repository](https://github.com/aitor-gomila/legendary-dart) or in your IDE intellisense.
+
+You can also see examples in the [examples directory](https://github.com/aitor-gomila/legendary-dart/tree/main/examples).
 
 ## Additional information
 
