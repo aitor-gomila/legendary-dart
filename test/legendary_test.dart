@@ -1,6 +1,5 @@
-import 'package:legendary/legendary.dart';
-import 'package:test/test.dart';
+import 'status_test.dart';
 
 void main() {
-
+  statusTests();
 }
