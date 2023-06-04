@@ -35,23 +35,7 @@ class LegendaryClient extends BaseLegendaryClient {
         return InstalledGame.fromJson(json);
       });
   }
-  
-  @override
-  Stream<int> install(String appName) {
-    // TODO: implement install
-    throw UnimplementedError();
-  }
-  
-  @override
-  Stream<String> launch(String appName) async* {
-    final process = await _runLegendaryCommand("launch $appName");
-    final processStdout = process.stdout.transform(utf8.decoder);
-    final processStderr = process.stderr.transform(utf8.decoder);
 
-    yield* processStdout;
-    yield* processStderr;
-  }
-  
   @override
   Future<List<Game>> list() async {
     final process = await _runLegendaryCommand("list");
@@ -67,7 +51,7 @@ class LegendaryClient extends BaseLegendaryClient {
       verbose: verbose
     );
   }
-  
+
   @override
   Future<List<InstalledGame>> listInstalled() async {
     final process = await _runLegendaryCommand("list-installed");
@@ -84,13 +68,29 @@ class LegendaryClient extends BaseLegendaryClient {
       verbose: verbose
     );
   }
-  
+
+  @override
+  Stream<String> launch(String appName) async* {
+    final process = await _runLegendaryCommand("launch $appName");
+    final processStdout = process.stdout.transform(utf8.decoder);
+    final processStderr = process.stderr.transform(utf8.decoder);
+
+    yield* processStdout;
+    yield* processStderr;
+  }
+
+  @override
+  Stream<int> install(String appName) {
+    // TODO: implement install
+    throw UnimplementedError();
+  }
+
   @override
   Stream<int> move(String appName, String path) {
     // TODO: implement move
     throw UnimplementedError();
   }
-  
+
   @override
   Future<Status> status() async {
     final process = await _runLegendaryCommand("status");
@@ -98,7 +98,7 @@ class LegendaryClient extends BaseLegendaryClient {
 
     return await watchStream(input: processStdout, transform: Status.fromJson);
   }
-  
+
   @override
   Stream<int> uninstall(String appName) {
     // TODO: implement uninstall
@@ -111,6 +111,7 @@ class LegendaryClient extends BaseLegendaryClient {
     // TODO: implement setLogin
     throw UnimplementedError();
   }
+
   @override
   Future<void> deleteLogin() async {
     final process = await _runLegendaryCommand("auth --disable-webview --delete");
@@ -125,5 +126,23 @@ class LegendaryClient extends BaseLegendaryClient {
       }
       break;
     }
+  }
+
+  @override
+  Future<void> cleanup() {
+    // TODO: implement cleanup
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<int> import(String appName, String location) {
+    // TODO: implement import
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<int> verify(String appName) {
+    // TODO: implement verify
+    throw UnimplementedError();
   }
 }
