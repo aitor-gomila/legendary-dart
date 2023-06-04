@@ -12,6 +12,14 @@ final class Status {
   final int gamesInstalled;
   final bool eglSyncEnabled;
   final String configDirectory;
+
+  Map<String, dynamic> toJson() => {
+    "account": account,
+    "games_available": gamesAvailable,
+    "games_installed": gamesInstalled,
+    "egl_sync_enabled": eglSyncEnabled,
+    "config_directory": configDirectory,
+  };
   
   factory Status.fromJson(dynamic obj) {
     if (obj is! Map<String, dynamic>) throw "obj is not a Map<String, dynamic>. it is a ${obj.runtimeType}";
