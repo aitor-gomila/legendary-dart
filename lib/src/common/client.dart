@@ -1,5 +1,4 @@
-import 'package:legendary/src/models/game.dart';
-import 'package:legendary/src/models/status.dart';
+import 'package:legendary/legendary.dart';
 
 abstract class BaseLegendaryClient {
   Future<void> setLogin(String code, {

@@ -3,11 +3,7 @@ import 'dart:convert';
 
 import 'package:legendary/legendary.dart';
 
-import 'package:legendary/src/client_base.dart';
-import 'package:legendary/src/watch_stream.dart';
-import 'package:legendary/src/models/status.dart';
-import 'package:legendary/src/models/game.dart';
-import 'package:legendary/src/models/manifest.dart';
+import 'package:legendary/src/io/watch_stream.dart';
 
 class LegendaryClient extends BaseLegendaryClient {
   final String legendaryPath;
