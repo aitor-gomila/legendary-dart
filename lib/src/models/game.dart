@@ -7,7 +7,16 @@ final class GameAsset {
   final String namespace;
   final Map<String, dynamic> metadata;
 
-  // FIXME: dangerous JSON conversion. check types
+  Map<String, dynamic> toJson() => {
+    "app_name": appName,
+    "asset_id": assetId,
+    "build_version": buildVersion,
+    "catalog_item_id": catalogItemId,
+    "label_name": labelName,
+    "namespace": namespace,
+    "metadata": metadata
+  };
+
   factory GameAsset.fromJson(dynamic obj) {
     if (obj is! Map<String, dynamic>) throw "obj is not a Map<String, dynamic>. it is a ${obj.runtimeType}";
 
@@ -78,6 +87,13 @@ final class Game {
     required this.metadata,
   });
 
+  Map<String, dynamic> toJson() => {
+    "app_name": appName,
+    "app_title": appTitle,
+    "asset_infos": assetInfos,
+    "base_urls": baseURLs,
+  };
+
   factory Game.fromJson(Map<String, dynamic> obj) {
     final appName = obj["app_name"];
     if (appName is! String) throw "appName is not a String. it is a ${appName.runtimeType}";
@@ -95,7 +111,6 @@ final class Game {
 
     final baseURLs = obj["base_urls"];
     if (baseURLs is! List) throw "baseURLs is not a List. it is a ${baseURLs.runtimeType}";
-    List<String> typedBaseURLs = baseURLs.map((e) => String.fromEnvironment(e)).toList();
 
     final metadata = obj["metadata"];
 
@@ -103,7 +118,7 @@ final class Game {
       appName: appName,
       appTitle: appTitle,
       assetInfos: typedAssetInfos,
-      baseURLs: typedBaseURLs,
+      baseURLs: List<String>.from(baseURLs),
       metadata: metadata,
     );
   }
@@ -111,9 +126,7 @@ final class Game {
 }
 
 extension GameList on List<Game> {
-  static List<Game> fromList(List<dynamic> list) {
-    return list.map((obj) => Game.fromJson(obj)).toList();
-  }
+  static List<Game> fromList(List<dynamic> list) => list.map((obj) => Game.fromJson(obj)).toList();
 }
 
 final class InstalledGame {
@@ -137,6 +150,75 @@ final class InstalledGame {
   final bool requiresOt;
   final String? savePath;
 
+  Map<String, dynamic> toJson() => {
+    "app_name": appName,
+    "install_path": installPath,
+    "title": title,
+    "version": version,
+    "base_urls": baseURLs,
+    "can_run_offline": canRunOffline,
+    "egl_guid": eglGuid,
+    "executable": executable,
+    "install_size": installSize,
+    "install_tags": installTags,
+    "is_dlc": isDLC,
+    "launch_parameters": launchParameters,
+    "manifest_path": manifestPath,
+    "needs_verification": needsVerification,
+    "platform": platform,
+    "prereq_info": prereqInfo,
+    "requires_ot": requiresOt,
+    "save_path": savePath
+  };
+
+  factory InstalledGame.fromJson(Map<String, dynamic> obj) {
+    final appName = obj["app_name"];
+    final installPath = obj["install_path"];
+    final title = obj["title"];
+    final version = obj["version"];
+    final baseURLs = obj["base_urls"];
+    if (baseURLs is! List) throw "baseURLs is not a List<String>. it is a ${baseURLs.runtimeType}";
+    for (var url in baseURLs) {
+      if (url is! String) throw "url in baseURLs is not a String. it is a ${url.runtimeType}";
+    }
+
+    final canRunOffline = obj["can_run_offline"];
+    final eglGuid = obj["egl_guid"];
+    final executable = obj["executable"];
+    final installSize = obj["install_size"];
+    final installTags = obj["install_tags"];
+    final isDLC = obj["is_dlc"];
+    final launchParameters = obj["launch_parameters"];
+    // FIXME
+    final manifestPath = obj["manifest_path"] ?? "";
+    final needsVerification = obj["needs_verification"];
+    final platform = obj["platform"];
+    final prereqInfo = obj["prereq_info"];
+    final requiresOt = obj["requires_ot"];
+    final savePath = obj["save_path"]; 
+
+    return InstalledGame(
+      appName: appName,
+      installPath: installPath,
+      title: title,
+      version: version,
+      baseURLs: List<String>.from(baseURLs),
+      canRunOffline: canRunOffline,
+      eglGuid: eglGuid,
+      executable: executable,
+      installSize: installSize,
+      installTags: List<String>.from(installTags),
+      isDLC: isDLC,
+      launchParameters: launchParameters,
+      manifestPath: manifestPath,
+      needsVerification: needsVerification,
+      platform: platform,
+      prereqInfo: prereqInfo,
+      requiresOt: requiresOt,
+      savePath: savePath,
+    );
+  }
+
   const InstalledGame({
     required this.appName,
     required this.installPath,
@@ -157,6 +239,10 @@ final class InstalledGame {
     required this.requiresOt,
     this.savePath
   });
+}
+
+extension InstalledGameList on List<InstalledGame> {
+  static List<InstalledGame> fromList(List<dynamic> list) => list.map<InstalledGame>((obj) => InstalledGame.fromJson(obj)).toList();
 }
 
 final class SaveGameFile {

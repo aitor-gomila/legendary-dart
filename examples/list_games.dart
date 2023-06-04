@@ -6,5 +6,6 @@ void main(argv) async {
   if (line == null) return;
 
   final client = LegendaryClient(legendaryPath: line, verbose: true);
-  print(await client.list());
+  final list = await client.list();
+  print(list.map((e) => e.toJson()));
 }
