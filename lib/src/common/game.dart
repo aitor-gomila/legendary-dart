@@ -77,7 +77,7 @@ final class Game {
   Map<String, dynamic> toJson() => {
     "app_name": appName,
     "app_title": appTitle,
-    "asset_infos": assetInfos,
+    "asset_infos": assetInfos.map((key, value) => MapEntry(key, value.toJson())),
     "base_urls": baseURLs,
   };
 
