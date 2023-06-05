@@ -79,6 +79,7 @@ final class Game {
     "app_title": appTitle,
     "asset_infos": assetInfos.map((key, value) => MapEntry(key, value.toJson())),
     "base_urls": baseURLs,
+    "metadata": metadata,
   };
 
   factory Game.fromJson(Map<String, dynamic> obj) {
