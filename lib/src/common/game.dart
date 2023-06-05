@@ -87,7 +87,7 @@ final class Game {
     final appTitle = obj["app_title"];
     final assetInfos = obj["asset_infos"];
 
-    Map<String, GameAsset> typedAssetInfos = assetInfos.map((key, asset) => MapEntry(
+    Map<String, GameAsset> typedAssetInfos = assetInfos.map<String, GameAsset>((String key, dynamic asset) => MapEntry(
       key,
       GameAsset.fromJson(asset)
     ));
