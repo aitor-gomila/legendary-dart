@@ -15,9 +15,9 @@ void statusTests() {
     ) fail("some field is not correct");
   });
 
-  test("Empty string on Status.fromJson throws", () {
+  test("Empty map on Status.fromJson throws", () {
     try {
-      Status.fromJson(jsonDecode(""));
+      Status.fromJson({});
     } catch (err) {
       print(err);
       return;
