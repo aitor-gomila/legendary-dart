@@ -26,6 +26,17 @@ void statusTests() {
     fail("Parsing bad json didn't fail on Status.fromJson");
   });
 
+  test("Parsing missing property on Status.fromJson throws", () {
+    try {
+      Status.fromJson(jsonDecode('{"account": "someAccount"}'));
+    } catch (err) {
+      print(err);
+      return;
+    }
+    // If doesn't throw, fail
+    fail("Parsing missing property didn't fail on Status.fromJson");
+  });
+
   test("Status.toJson is accurate", () {
     final status = Status(
       account: "someAccount",
