@@ -11,7 +11,7 @@ final class Status {
   final int gamesAvailable;
   final int gamesInstalled;
   final bool eglSyncEnabled;
-  final String configDirectory;
+  final String? configDirectory;
 
   Map<String, dynamic> toJson() => {
     "account": account,
