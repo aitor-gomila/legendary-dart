@@ -94,9 +94,12 @@ class LegendaryClient extends BaseLegendaryClient {
 
   @override
   Future<void> setLogin(String code, { sid, token }) async {
-    final process = _runLegendaryCommand("auth --disable-webview --token $code");
-    // TODO: implement setLogin
-    throw UnimplementedError();
+    final process = await _runLegendaryCommand("auth --disable-webview --token $code");
+    final processStderr = process.stderr.transform(utf8.decoder);
+
+    final String successStatement = "[cli] INFO: Successfully logged in as ";
+
+    return await watchStreamAndWatchForString(processStderr, string: successStatement);
   }
 
   @override
