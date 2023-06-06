@@ -106,7 +106,7 @@ class LegendaryClient extends BaseLegendaryClient {
     const String successStatement = "[cli] INFO: User data deleted.";
 
     return await watchStreamAndWatchForString(
-      input: processStderr,
+      processStderr,
       string: successStatement,
     );
   }
