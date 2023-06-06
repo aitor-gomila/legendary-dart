@@ -25,7 +25,7 @@ void main() async {
 
 You can see the types in the [github repository](https://github.com/aitor-gomila/legendary-dart) or in your IDE intellisense.
 
-You can also see examples in the [examples directory](https://github.com/aitor-gomila/legendary-dart/tree/main/examples).
+You can also see examples in the [example directory](https://github.com/aitor-gomila/legendary-dart/tree/main/example).
 
 ## Additional information
 
