@@ -4,7 +4,23 @@ import 'package:test/test.dart';
 
 void gameTests() {
   test("Correct string on Game.fromJson doesn't throw, fields are accurate", () {
-    var string = '{"app_name": "Fortnite", "app_title": "Fortnite", "asset_infos": {"windows": {"app_name": "Fortnite", "asset_id": "", "build_version": "", "catalog_item_id": "", "label_name": "", "namespace": "", "metadata": {}}}, "metadata": {}, "base_urls": []}';
+    var string = '''{
+      "app_name": "Fortnite",
+      "app_title": "Fortnite",
+      "asset_infos": {
+        "windows": {
+          "app_name": "Fortnite",
+          "asset_id": "",
+          "build_version": "",
+          "catalog_item_id": "",
+          "label_name": "",
+          "namespace": "",
+          "metadata": {}
+          }
+        },
+        "metadata": {},
+        "base_urls": []
+      }''';
     final game = Game.fromJson(jsonDecode(string));
 
     expect(game, isA<Game>());
