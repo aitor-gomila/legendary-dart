@@ -3,137 +3,96 @@ import 'dart:convert';
 
 import 'package:legendary/legendary.dart';
 
-import 'package:legendary/src/io/watch_stream.dart';
-
-class LegendaryClient extends BaseLegendaryClient {
+// This client is intended for end users.
+// You spawn the class, give it the path to legendary,
+// and it just works
+class LegendaryProcessClient extends LegendaryBaseClient {
   final String legendaryPath;
   final bool verbose;
+  late final LegendaryStreamClient streamClient;
 
-  LegendaryClient({ required this.legendaryPath, this.verbose = false });
+  LegendaryProcessClient({
+    required this.legendaryPath,
+    this.verbose = false,
+  }) {
+    streamClient = LegendaryStreamClient(startProcess: _runLegendaryCommand);
+  }
 
-  Future<Process> _runLegendaryCommand(String command) {
-    return Process.start(
+  Future<LegendaryProcess> _runLegendaryCommand(List<String> args) async {
+    final process = await Process.start(
       legendaryPath,
-      [...command.split(" "), "--json"]
+      [...args, "--json"]
+    );
+
+    return LegendaryProcess(
+      stdout: process.stdout.transform(utf8.decoder),
+      stderr: process.stderr.transform(utf8.decoder)
     );
   }
-
-  @override
-  Future<InstalledGame> info(String appName) async {
-    final process = await _runLegendaryCommand("info $appName");
-    final processStdout = process.stdout.transform(utf8.decoder);
-
-    final stream = await watchStreamAndReturnSum(processStdout);
-    final json = jsonDecode(stream);
-
-    if (json is! Map<String, dynamic>) throw "json is not a Map<String, dynamic>. it is a ${json.runtimeType}";
-
-    return InstalledGame.fromJson(json);
-  }
-
-  @override
-  Future<List<Game>> list() async {
-    final process = await _runLegendaryCommand("list");
-    final processStdout = process.stdout.transform(utf8.decoder);
-
-    final stream = await watchStreamAndReturnSum(processStdout);
-    final json = jsonDecode(stream);
-    if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
-    return GameList.fromList(json);
-  }
-
-  @override
-  Future<List<InstalledGame>> listInstalled() async {
-    final process = await _runLegendaryCommand("list-installed");
-    final processStdout = process.stdout.transform(utf8.decoder);
-
-    final String stream = await watchStreamAndReturnSum(processStdout);
-    if (verbose) stderr.write(stream);
-    final json = jsonDecode(stream);
-    if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
-    return InstalledGameList.fromList(json);
-  }
-
-  @override
-  Stream<String> launch(String appName) async* {
-    final process = await _runLegendaryCommand("launch $appName");
-    final processStdout = process.stdout.transform(utf8.decoder);
-    final processStderr = process.stderr.transform(utf8.decoder);
-
-    yield* processStdout;
-    yield* processStderr;
-  }
-
-  @override
-  Stream<int> install(String appName) {
-    // TODO: implement install
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<int> move(String appName, String path) {
-    // TODO: implement move
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Status> status() async {
-    final process = await _runLegendaryCommand("status");
-    final processStdout = process.stdout.transform(utf8.decoder);
-
-    return Status.fromJson(
-      await watchStreamAndReturnSum(processStdout)
-    );
-  }
-
-  @override
-  Stream<int> uninstall(String appName) {
-    // TODO: implement uninstall
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> setLogin(String code, { sid, token }) async {
-    // if either sid or token are defined, put them
-    // if not, don't
-    final sidString = sid != null? "--sid $sid" : "";
-    final tokenString = token != null ? "--token $token" : "";
-
-    final process = await _runLegendaryCommand("auth --disable-webview --code $code $sidString $tokenString");
-    final processStderr = process.stderr.transform(utf8.decoder);
-
-    final String successStatement = "[cli] INFO: Successfully logged in as ";
-
-    return await watchStreamAndWatchForString(processStderr, string: successStatement);
-  }
-
-  @override
-  Future<void> deleteLogin() async {
-    final process = await _runLegendaryCommand("auth --delete");
-    final processStderr = process.stderr.transform(utf8.decoder);
-    const String successStatement = "[cli] INFO: User data deleted.";
-
-    return await watchStreamAndWatchForString(
-      processStderr,
-      string: successStatement,
-    );
-  }
-
+  
   @override
   Future<void> cleanup() {
-    // TODO: implement cleanup
-    throw UnimplementedError();
+    return streamClient.cleanup();
   }
-
+  
+  @override
+  Future<void> deleteLogin() {
+    return streamClient.deleteLogin();
+  }
+  
   @override
   Stream<int> import(String appName, String location) {
-    // TODO: implement import
-    throw UnimplementedError();
+    return streamClient.import(appName, location);
   }
-
+  
+  @override
+  Future<InstalledGame> info(String appName) {
+    return streamClient.info(appName);
+  }
+  
+  @override
+  Stream<int> install(String appName) {
+    return streamClient.install(appName);
+  }
+  
+  @override
+  Stream<String> launch(String appName) {
+    return streamClient.launch(appName);
+  }
+  
+  @override
+  Future<List<Game>> list() {
+    return streamClient.list();
+  }
+  
+  @override
+  Future<List<InstalledGame>> listInstalled() {
+    return streamClient.listInstalled();
+  }
+  
+  @override
+  Stream<int> move(String appName, String path) {
+    return streamClient.move(appName, path);
+  }
+  
+  @override
+  Future<void> setLogin(String code, {String? sid, String? token}) {
+    return streamClient.setLogin(code, sid: sid, token: token);
+  }
+  
+  @override
+  Future<Status> status() {
+    return streamClient.status();
+  }
+  
+  @override
+  Stream<int> uninstall(String appName) {
+    return streamClient.uninstall(appName);
+  }
+  
   @override
   Stream<int> verify(String appName) {
-    // TODO: implement verify
-    throw UnimplementedError();
+    return streamClient.verify(appName);
   }
+
 }

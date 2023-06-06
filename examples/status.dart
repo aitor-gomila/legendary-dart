@@ -5,7 +5,7 @@ void main(argv) async {
 
   if (line == null) return;
 
-  final client = LegendaryClient(legendaryPath: line);
+  final client = LegendaryProcessClient(legendaryPath: line);
   final status = await client.status();
 
   print(status.toJson());

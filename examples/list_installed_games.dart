@@ -5,7 +5,7 @@ void main(argv) async {
 
   if (line == null) return;
 
-  final client = LegendaryClient(legendaryPath: line);
+  final client = LegendaryProcessClient(legendaryPath: line);
   final list = await client.listInstalled();
   print(list.map((e) => e.toJson()));
 }

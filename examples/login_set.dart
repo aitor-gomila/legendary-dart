@@ -15,7 +15,7 @@ void main(argv) async {
 
   if (code == null) return;
 
-  final client = LegendaryClient(legendaryPath: line);
+  final client = LegendaryProcessClient(legendaryPath: line);
   await client.setLogin(code);
   print("Logged in");
 
