@@ -5,7 +5,7 @@ void statusTests() {
   test("Empty map on Status.fromJson throws", () {
     expect(
       () => Status.fromJson({}),
-      throwsA(isA<String>())
+      throwsA(isA<TypeError>())
     );
   });
 
