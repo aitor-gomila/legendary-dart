@@ -56,7 +56,7 @@ class LegendaryClient extends BaseLegendaryClient {
     return await watchStream<List<InstalledGame>>(
       input: processStdout,
       transform: (obj) {
-        if (verbose) stdout.write(obj);
+        if (verbose) stderr.write(obj);
         final json = jsonDecode(obj);
         if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
         return InstalledGameList.fromList(json);
@@ -114,7 +114,7 @@ class LegendaryClient extends BaseLegendaryClient {
     final processStdout = process.stdout.transform(utf8.decoder);
 
     await for (final line in processStdout) {
-      if (verbose) stdout.write(line);
+      if (verbose) stderr.write(line);
 
       const String successStatement = "[cli] INFO: User data deleted.";
       if (!line.contains(successStatement)) {
