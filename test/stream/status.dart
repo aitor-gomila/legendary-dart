@@ -34,6 +34,6 @@ void statusTest() async {
     expect(status, isA<Status>());
   });
   test("status.toJson equals correct status", () {
-    expect(status.toJson(), equals(correctStatus));
+    expect(status.toJson(), equals(correctStatus.toJson()));
   });
 }

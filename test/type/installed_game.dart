@@ -47,6 +47,6 @@ void installedGameTests() {
       "save_path": null,
     };
 
-    expect(InstalledGame.fromJson(map), equals(correctInstalledGame));
+    expect(InstalledGame.fromJson(map).toJson(), equals(correctInstalledGame.toJson()));
   });
 }

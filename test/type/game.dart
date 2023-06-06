@@ -46,6 +46,6 @@ void gameTests() {
       "metadata": {},
     };
 
-    expect(Game.fromJson(map), equals(correctGame));
+    expect(Game.fromJson(map).toJson(), equals(correctGame.toJson()));
   });
 }
