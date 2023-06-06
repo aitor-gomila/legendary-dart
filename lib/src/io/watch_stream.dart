@@ -1,13 +1,25 @@
-Future<T> watchStream<T>({
-  required Stream<String> input,
-  required T Function(String) transform,
-  bool verbose = false
-}) async {
+Future<String> watchStreamAndReturnSum(Stream<String> input) async {
   String output = "";
 
-  await for (final text in input) {
-    output += text;
+  await for (final line in input) {
+    output += line;
   }
 
-  return transform(output);
+  return output;
+}
+
+Future<void> watchStreamAndWatchForString({
+  required Stream<String> input,
+  required String string
+}) async {
+  bool success = false;
+
+  await for (final line in input) {
+    if (line.contains(string)) {
+      success = true;
+      break;
+    }
+  }
+
+  if (!success) throw "message $string was not found in stream";
 }

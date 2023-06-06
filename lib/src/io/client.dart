@@ -23,13 +23,12 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("info $appName");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStream(input: processStdout, transform: (obj) {
-        final json = jsonDecode(obj);
+    final stream = await watchStreamAndReturnSum(processStdout);
+    final json = jsonDecode(stream);
 
-        if (json is! Map<String, dynamic>) throw "json is not a Map<String, dynamic>. it is a ${json.runtimeType}";
+    if (json is! Map<String, dynamic>) throw "json is not a Map<String, dynamic>. it is a ${json.runtimeType}";
 
-        return InstalledGame.fromJson(json);
-      });
+    return InstalledGame.fromJson(json);
   }
 
   @override
@@ -37,15 +36,10 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("list");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStream<List<Game>>(
-      input: processStdout,
-      transform: (obj) {
-        final json = jsonDecode(obj);
-        if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
-        return GameList.fromList(json);
-      },
-      verbose: verbose
-    );
+    final stream = await watchStreamAndReturnSum(processStdout);
+    final json = jsonDecode(stream);
+    if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
+    return GameList.fromList(json);
   }
 
   @override
@@ -53,16 +47,11 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("list-installed");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStream<List<InstalledGame>>(
-      input: processStdout,
-      transform: (obj) {
-        if (verbose) stderr.write(obj);
-        final json = jsonDecode(obj);
-        if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
-        return InstalledGameList.fromList(json);
-      },
-      verbose: verbose
-    );
+    final String stream = await watchStreamAndReturnSum(processStdout);
+    if (verbose) stderr.write(stream);
+    final json = jsonDecode(stream);
+    if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
+    return InstalledGameList.fromList(json);
   }
 
   @override
@@ -92,7 +81,9 @@ class LegendaryClient extends BaseLegendaryClient {
     final process = await _runLegendaryCommand("status");
     final processStdout = process.stdout.transform(utf8.decoder);
 
-    return await watchStream(input: processStdout, transform: Status.fromJson);
+    return Status.fromJson(
+      await watchStreamAndReturnSum(processStdout)
+    );
   }
 
   @override
@@ -112,18 +103,12 @@ class LegendaryClient extends BaseLegendaryClient {
   Future<void> deleteLogin() async {
     final process = await _runLegendaryCommand("auth --delete");
     final processStderr = process.stderr.transform(utf8.decoder);
-    bool finishMessageWasEmitted = false;
+    const String successStatement = "[cli] INFO: User data deleted.";
 
-    await for (final line in processStderr) {
-      if (verbose) stderr.write(line);
-
-      const String successStatement = "[cli] INFO: User data deleted.";
-      if (line.contains(successStatement)) {
-        finishMessageWasEmitted = true;
-        break;
-      }
-    }
-    if (!finishMessageWasEmitted) throw "finish message was not emitted from legendary";
+    return await watchStreamAndWatchForString(
+      input: processStderr,
+      string: successStatement,
+    );
   }
 
   @override
