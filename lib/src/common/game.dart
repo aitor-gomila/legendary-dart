@@ -158,11 +158,6 @@ final class InstalledGame {
     final title = obj["title"];
     final version = obj["version"];
     final baseURLs = obj["base_urls"];
-    if (baseURLs is! List) throw "baseURLs is not a List<String>. it is a ${baseURLs.runtimeType}";
-    for (var url in baseURLs) {
-      if (url is! String) throw "url in baseURLs is not a String. it is a ${url.runtimeType}";
-    }
-
     final canRunOffline = obj["can_run_offline"];
     final eglGuid = obj["egl_guid"];
     final executable = obj["executable"];
