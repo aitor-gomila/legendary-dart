@@ -7,7 +7,7 @@ void main(argv) async {
 
   if (line == null) return;
 
-  final client = LegendaryClient(legendaryPath: line, verbose: true);
+  final client = LegendaryClient(legendaryPath: line);
   await client.deleteLogin();
   print("Logged out");
 }

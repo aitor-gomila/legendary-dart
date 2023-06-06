@@ -14,7 +14,7 @@ class LegendaryClient extends BaseLegendaryClient {
   Future<Process> _runLegendaryCommand(String command) {
     return Process.start(
       legendaryPath,
-      [command, "--json"]
+      [...command.split(" "), "--json"]
     );
   }
 
@@ -110,18 +110,20 @@ class LegendaryClient extends BaseLegendaryClient {
 
   @override
   Future<void> deleteLogin() async {
-    final process = await _runLegendaryCommand("auth --disable-webview --delete");
-    final processStdout = process.stdout.transform(utf8.decoder);
+    final process = await _runLegendaryCommand("auth --delete");
+    final processStderr = process.stderr.transform(utf8.decoder);
+    bool finishMessageWasEmitted = false;
 
-    await for (final line in processStdout) {
+    await for (final line in processStderr) {
       if (verbose) stderr.write(line);
 
       const String successStatement = "[cli] INFO: User data deleted.";
-      if (!line.contains(successStatement)) {
-        continue;
+      if (line.contains(successStatement)) {
+        finishMessageWasEmitted = true;
+        break;
       }
-      break;
     }
+    if (!finishMessageWasEmitted) throw "finish message was not emitted from legendary";
   }
 
   @override
