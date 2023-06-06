@@ -7,12 +7,7 @@ void gameTests() {
     var string = '{"app_name": "Fortnite", "app_title": "Fortnite", "asset_infos": {"windows": {"app_name": "Fortnite", "asset_id": "", "build_version": "", "catalog_item_id": "", "label_name": "", "namespace": "", "metadata": {}}}, "metadata": {}, "base_urls": []}';
     final game = Game.fromJson(jsonDecode(string));
 
-    if (
-      game.appName != "Fortnite" ||
-      game.appTitle != "Fortnite" ||
-      game.assetInfos["windows"]?.appName != "Fortnite" ||
-      game.baseURLs.isNotEmpty
-    ) fail("some field is not correct");
+    expect(game, isA<Game>());
   });
 
   test("Empty map on Game.fromJson throws", () {

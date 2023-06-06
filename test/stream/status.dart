@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'package:legendary/legendary.dart';
 
-void _statusTest() async {
+void statusTest() async {
   late Status status;
   setUp(() async {
     final process = LegendaryProcess(
@@ -66,8 +66,4 @@ void _statusTest() async {
       );
     });
   });
-}
-
-void clientTest() {
-  _statusTest();
 }
