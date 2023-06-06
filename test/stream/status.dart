@@ -30,36 +30,36 @@ void statusTest() async {
     expect(status, isA<Status>());
   });
 
-  group("status fields are correct", () {
-    test("status.account equals example", () {
+  group("Status fields are correct", () {
+    test("Status.account equals example", () {
       expect(
         status.account,
         equals("example")
       );
     });
 
-    test("status.gamesAvailable equals 0", () {
+    test("Status.gamesAvailable equals 0", () {
       expect(
         status.gamesAvailable,
         equals(0)
       );
     });
 
-    test("status.gamesInstalled equals 0", () {
+    test("Status.gamesInstalled equals 0", () {
       expect(
         status.gamesInstalled,
         equals(0)
       );
     });
 
-    test("status.eglSyncEnabled equals false", () {
+    test("Status.eglSyncEnabled equals false", () {
       expect(
         status.eglSyncEnabled,
         equals(false)
       );
     });
 
-    test("status.configDirectory equals null", () {
+    test("Status.configDirectory equals null", () {
       expect(
         status.configDirectory,
         equals(null)
