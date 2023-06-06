@@ -165,8 +165,7 @@ final class InstalledGame {
     final installTags = obj["install_tags"];
     final isDLC = obj["is_dlc"];
     final launchParameters = obj["launch_parameters"];
-    // FIXME
-    final manifestPath = obj["manifest_path"] ?? "";
+    final manifestPath = obj["manifest_path"];
     final needsVerification = obj["needs_verification"];
     final platform = obj["platform"];
     final prereqInfo = obj["prereq_info"];
