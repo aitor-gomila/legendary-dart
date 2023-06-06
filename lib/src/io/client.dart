@@ -15,7 +15,12 @@ class LegendaryProcessClient extends LegendaryBaseClient {
     required this.legendaryPath,
     this.verbose = false,
   }) {
-    streamClient = LegendaryStreamClient(startProcess: _runLegendaryCommand);
+    streamClient = LegendaryStreamClient(
+      startProcess: _runLegendaryCommand,
+      verbosePrint: (message) {
+        if (verbose) stderr.write(message);
+      },
+    );
   }
 
   Future<LegendaryProcess> _runLegendaryCommand(List<String> args) async {
