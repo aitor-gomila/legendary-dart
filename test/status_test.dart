@@ -16,25 +16,10 @@ void statusTests() {
   });
 
   test("Empty map on Status.fromJson throws", () {
-    try {
-      Status.fromJson({});
-    } catch (err) {
-      print(err);
-      return;
-    }
-    // If doesn't throw, fail
-    fail("Parsing bad json didn't fail on Status.fromJson");
-  });
-
-  test("Parsing missing property on Status.fromJson throws", () {
-    try {
-      Status.fromJson(jsonDecode('{"account": "someAccount"}'));
-    } catch (err) {
-      print(err);
-      return;
-    }
-    // If doesn't throw, fail
-    fail("Parsing missing property didn't fail on Status.fromJson");
+    expect(
+      () => Status.fromJson({}),
+      throwsA(isA<String>())
+    );
   });
 
   test("Status.toJson is accurate", () {

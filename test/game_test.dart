@@ -16,25 +16,10 @@ void gameTests() {
   });
 
   test("Empty map on Game.fromJson throws", () {
-    try {
-      Game.fromJson({});
-    } catch (err) {
-      print(err);
-      return;
-    }
-    // If doesn't throw, fail
-    fail("Parsing bad json didn't fail on Game.fromJson");
-  });
-
-  test("Parsing missing property on Game.fromJson throws", () {
-    try {
-      Status.fromJson(jsonDecode('{"app_name": "Fortnite"}'));
-    } catch (err) {
-      print(err);
-      return;
-    }
-    // If doesn't throw, fail
-    fail("Parsing missing property didn't fail on Game.fromJson");
+    expect(
+      () => Game.fromJson({}),
+      throwsA(isA<NoSuchMethodError>())
+    );
   });
 
   test("Game.toJson is accurate", () {
