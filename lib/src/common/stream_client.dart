@@ -30,9 +30,10 @@ class LegendaryStreamClient extends LegendaryBaseClient {
     _verbosePrint!(stream);
 
     final json = jsonDecode(stream);
-    if (json is! Map<String, dynamic>) throw "json is not a Map<String, dynamic>. it is a ${json.runtimeType}";
 
-    return InstalledGame.fromJson(json);
+    return InstalledGame.fromJson(
+      Map<String, dynamic>.from(json)
+    );
   }
 
   @override
@@ -42,9 +43,10 @@ class LegendaryStreamClient extends LegendaryBaseClient {
     _verbosePrint!(stream);
 
     final json = jsonDecode(stream);
-    if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
 
-    return GameList.fromList(json);
+    return GameList.fromList(
+      List<dynamic>.from(json)
+    );
   }
 
   @override
@@ -54,9 +56,10 @@ class LegendaryStreamClient extends LegendaryBaseClient {
     _verbosePrint!(stream);
 
     final json = jsonDecode(stream);
-    if (json is! List) throw "json is not a List. it is a ${json.runtimeType}";
 
-    return InstalledGameList.fromList(json);
+    return InstalledGameList.fromList(
+      List<dynamic>.from(json)
+    );
   }
 
   @override
@@ -86,9 +89,10 @@ class LegendaryStreamClient extends LegendaryBaseClient {
     _verbosePrint!(stream);
 
     final json = jsonDecode(stream);
-    if (json is! Map<String, dynamic>) throw "json is not a Map<String, dynamic>. it is a ${json.runtimeType}";
 
-    return Status.fromJson(json);
+    return Status.fromJson(
+      Map<String, dynamic>.from(json)
+    );
   }
 
   @override

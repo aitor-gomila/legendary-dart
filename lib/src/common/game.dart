@@ -17,9 +17,7 @@ final class GameAsset {
     "metadata": metadata
   };
 
-  factory GameAsset.fromJson(dynamic obj) {
-    if (obj is! Map<String, dynamic>) throw "obj is not a Map<String, dynamic>. it is a ${obj.runtimeType}";
-
+  factory GameAsset.fromJson(Map<String, dynamic> obj) {
     final appName = obj["app_name"];
     final assetId = obj["asset_id"];
     final buildVersion = obj["build_version"];
@@ -35,7 +33,7 @@ final class GameAsset {
       catalogItemId: catalogItemId,
       labelName: labelName,
       namespace: namespace,
-      metadata: metadata,
+      metadata: Map<String, dynamic>.from(metadata),
     );
   }
 
@@ -100,7 +98,7 @@ final class Game {
       appTitle: appTitle,
       assetInfos: typedAssetInfos,
       baseURLs: List<String>.from(baseURLs),
-      metadata: metadata,
+      metadata: Map<String, dynamic>.from(metadata),
     );
   }
 
