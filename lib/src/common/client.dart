@@ -1,6 +1,6 @@
 import 'package:legendary/legendary.dart';
 
-abstract class BaseLegendaryClient {
+abstract class LegendaryBaseClient {
   Future<void> setLogin(String code, {
     String? sid,
     String? token,
