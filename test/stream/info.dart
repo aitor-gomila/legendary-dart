@@ -42,6 +42,6 @@ void infoTest() async {
   });
   
   test("InstalledGame fields are correct", () {
-    expect(info.toJson(), equals(correctInstalledGame));
+    expect(info.toJson(), equals(correctInstalledGame.toJson()));
   });
 }
