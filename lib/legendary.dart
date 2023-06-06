@@ -7,5 +7,5 @@ export 'src/common/game.dart';
 export 'src/common/manifest.dart';
 export 'src/common/status.dart';
 export 'src/common/client.dart';
-export 'src/io/stream_client.dart';
+export 'src/common/stream_client.dart';
 export 'src/io/client.dart';
