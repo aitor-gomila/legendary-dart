@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:legendary/legendary.dart';
+import 'package:legendary/src/io/stream_client.dart';
 
 void statusTest() async {
   final Status correctStatus = Status(
@@ -13,21 +14,13 @@ void statusTest() async {
   late Status status;
 
   setUp(() async {
-    final process = LegendaryProcess(
-      stdout: Stream.fromIterable(
+    status = await LegendaryStreamClient.status(
+      Stream.fromIterable(
         [
           jsonEncode(correctStatus)
         ]
       ),
-      stderr: Stream.empty()
     );
-
-    final client = LegendaryStreamClient(
-      startProcess: (_) => Future.value(process),
-      verbosePrint: (_) {}
-    );
-
-    status = await client.status();
   });
 
   test("status is a Status", () {

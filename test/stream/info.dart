@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:legendary/legendary.dart';
+import 'package:legendary/src/io/stream_client.dart';
 
 void infoTest() async {
   late InstalledGame info;
@@ -24,21 +25,14 @@ void infoTest() async {
   );
 
   setUp(() async {
-    final process = LegendaryProcess(
-      stdout: Stream.fromIterable(
+    info = await LegendaryStreamClient.info(
+      Stream.fromIterable(
         [
           jsonEncode(correctInstalledGame)
         ]
       ),
-      stderr: Stream.empty()
+      "example"
     );
-
-    final client = LegendaryStreamClient(
-      startProcess: (_) => Future.value(process),
-      verbosePrint: (_) {}
-    );
-
-    info = await client.info("example");
   });
   
   test("InstalledGame fields are correct", () {
