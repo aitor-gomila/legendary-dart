@@ -16,7 +16,7 @@ First, use `dart pub add legendary` to add the package to your project. Then, im
 import 'package:legendary/legendary.dart';
 
 void main() async {
-    final client = LegendaryProcessClient(legendaryPath: "absolute/path/to/legendary.exe");
+    final client = LegendaryClient(legendaryPath: "absolute/path/to/legendary.exe");
     await client.setLogin("auth_token", token: "", sid: "");
     await client.status();
     await client.list();
