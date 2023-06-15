@@ -1,4 +1,4 @@
-`legendary` is a Dart package that lets you interact with [Legendary](https://github.com/derrod/legendary), an epic games launcher for linux, windows, and mac, directly from code. It is used in my [Flutter-based Epic Games Launcher](https://github.com/aitor-gomila/flutter-epic-games-launcher).
+`legendary` is a Dart package that lets you interact with [Legendary](https://github.com/derrod/legendary), an epic games launcher for linux, windows, and mac, directly from code. It is used in my [Flutter-based Epic Games Launcher](https://github.com/aitor-gomila/mitical-launcher).
 
 ## Features
 
@@ -23,12 +23,12 @@ void main() async {
 }
 ```
 
-You can see the types in the [github repository](https://github.com/aitor-gomila/legendary-dart) or in your IDE intellisense.
+You may check the types in the [github repository](https://github.com/aitor-gomila/legendary-dart) or in your IDE intellisense.
 
 You can also see examples in the [example directory](https://github.com/aitor-gomila/legendary-dart/tree/main/example).
 
 ## Additional information
 
 - Backend: [Legendary from derroid](https://github.com/derroid/legendary)
-- My Flutter-based: [Epic Games Launcher from aitor-gomila](https://github.com/aitor-gomila/flutter-epic-games-launcher)
+- My Flutter-based: [Epic Games Launcher from aitor-gomila](https://github.com/aitor-gomila/mitical-launcher)
 - Inspired by: [Heroic Games Launcher from flavioislima](https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher)
