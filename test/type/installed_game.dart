@@ -3,23 +3,22 @@ import 'package:test/test.dart';
 
 void installedGameTests() {
   InstalledGame correctInstalledGame = InstalledGame(
-    appName: "example",
-    installPath: "",
-    title: "example",
-    version: "",
-    baseURLs: [],
-    canRunOffline: false,
-    eglGuid: "",
-    executable: "",
-    installSize: 0,
-    installTags: [],
-    isDLC: false,
-    launchParameters: "",
-    manifestPath: "",
-    needsVerification: false,
-    platform: "windows",
-    requiresOt: false
-  );
+      appName: "example",
+      installPath: "",
+      title: "example",
+      version: "",
+      baseURLs: [],
+      canRunOffline: false,
+      eglGuid: "",
+      executable: "",
+      installSize: 0,
+      installTags: [],
+      isDLC: false,
+      launchParameters: "",
+      manifestPath: "",
+      needsVerification: false,
+      platform: "windows",
+      requiresOt: false);
 
   test("Empty map on InstalledGame.fromJson throws", () {
     expect(() => InstalledGame.fromJson({}), throwsA(isA<TypeError>()));
@@ -47,6 +46,7 @@ void installedGameTests() {
       "save_path": null,
     };
 
-    expect(InstalledGame.fromJson(map).toJson(), equals(correctInstalledGame.toJson()));
+    expect(InstalledGame.fromJson(map).toJson(),
+        equals(correctInstalledGame.toJson()));
   });
 }

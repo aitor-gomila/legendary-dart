@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:legendary/legendary.dart';
 
@@ -7,6 +6,7 @@ import 'package:legendary/legendary.dart';
 class LegendaryStreamClient extends LegendaryBaseClient {
   final LegendaryProcess process;
 
+  @override
   Future<LegendaryProcess> getStream(List<String> arguments) async {
     return process;
   }

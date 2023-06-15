@@ -3,10 +3,7 @@ import 'package:test/test.dart';
 
 void statusTests() {
   test("Empty map on Status.fromJson throws", () {
-    expect(
-      () => Status.fromJson({}),
-      throwsA(isA<TypeError>())
-    );
+    expect(() => Status.fromJson({}), throwsA(isA<TypeError>()));
   });
 
   test("Status.toJson is accurate", () {
@@ -20,10 +17,10 @@ void statusTests() {
 
     final correctMap = {
       "account": "someAccount",
-      "games_installed":62,
-      "games_available":0,
-      "egl_sync_enabled":false,
-      "config_directory":""
+      "games_installed": 62,
+      "games_available": 0,
+      "egl_sync_enabled": false,
+      "config_directory": ""
     };
 
     expect(status.toJson(), equals(correctMap));

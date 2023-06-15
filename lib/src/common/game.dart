@@ -8,14 +8,14 @@ final class GameAsset {
   final Map<String, dynamic> metadata;
 
   Map<String, dynamic> toJson() => {
-    "app_name": appName,
-    "asset_id": assetId,
-    "build_version": buildVersion,
-    "catalog_item_id": catalogItemId,
-    "label_name": labelName,
-    "namespace": namespace,
-    "metadata": metadata
-  };
+        "app_name": appName,
+        "asset_id": assetId,
+        "build_version": buildVersion,
+        "catalog_item_id": catalogItemId,
+        "label_name": labelName,
+        "namespace": namespace,
+        "metadata": metadata
+      };
 
   factory GameAsset.fromJson(Map<String, dynamic> obj) {
     final appName = obj["app_name"];
@@ -54,13 +54,18 @@ final class Game {
   final Map<String, GameAsset> assetInfos;
   final List<String> baseURLs;
   final Map<String, dynamic> metadata;
-  String? appVersion (String platform) => assetInfos[platform]?.buildVersion;
+  String? appVersion(String platform) => assetInfos[platform]?.buildVersion;
   bool get isDLC => metadata["mainGameItem"];
-  String get thirdPartyStore => metadata["customAttributes"]["ThirdPartyManagedApp"]["value"];
-  String get partnerLinkType => metadata["customAttributes"]["partnerLinkType"]["value"];
-  String get partnerLinkId => metadata["customAttributes"]["partnerLinkId"]["value"];
-  bool get supportsCloudSaves => !metadata["customAttributes"]["CloudSaveFolder"];
-  bool get supportsMacCloudSaves => !metadata["customAttributes"]["CloudSaveFolder_MAC"];
+  String get thirdPartyStore =>
+      metadata["customAttributes"]["ThirdPartyManagedApp"]["value"];
+  String get partnerLinkType =>
+      metadata["customAttributes"]["partnerLinkType"]["value"];
+  String get partnerLinkId =>
+      metadata["customAttributes"]["partnerLinkId"]["value"];
+  bool get supportsCloudSaves =>
+      !metadata["customAttributes"]["CloudSaveFolder"];
+  bool get supportsMacCloudSaves =>
+      !metadata["customAttributes"]["CloudSaveFolder_MAC"];
   String get catalogItemId => metadata["id"];
   String get namespace => metadata["namespace"];
 
@@ -73,22 +78,22 @@ final class Game {
   });
 
   Map<String, dynamic> toJson() => {
-    "app_name": appName,
-    "app_title": appTitle,
-    "asset_infos": assetInfos.map((key, value) => MapEntry(key, value.toJson())),
-    "base_urls": baseURLs,
-    "metadata": metadata,
-  };
+        "app_name": appName,
+        "app_title": appTitle,
+        "asset_infos":
+            assetInfos.map((key, value) => MapEntry(key, value.toJson())),
+        "base_urls": baseURLs,
+        "metadata": metadata,
+      };
 
   factory Game.fromJson(Map<String, dynamic> obj) {
     final appName = obj["app_name"];
     final appTitle = obj["app_title"];
     final assetInfos = obj["asset_infos"];
 
-    Map<String, GameAsset> typedAssetInfos = assetInfos.map<String, GameAsset>((String key, dynamic asset) => MapEntry(
-      key,
-      GameAsset.fromJson(asset)
-    ));
+    Map<String, GameAsset> typedAssetInfos = assetInfos.map<String, GameAsset>(
+        (String key, dynamic asset) =>
+            MapEntry(key, GameAsset.fromJson(asset)));
 
     final baseURLs = obj["base_urls"];
     final metadata = obj["metadata"];
@@ -101,11 +106,11 @@ final class Game {
       metadata: Map<String, dynamic>.from(metadata),
     );
   }
-
 }
 
 extension GameList on List<Game> {
-  static List<Game> fromList(List<dynamic> list) => list.map((obj) => Game.fromJson(obj)).toList();
+  static List<Game> fromList(List<dynamic> list) =>
+      list.map((obj) => Game.fromJson(obj)).toList();
 }
 
 final class InstalledGame {
@@ -130,25 +135,25 @@ final class InstalledGame {
   final String? savePath;
 
   Map<String, dynamic> toJson() => {
-    "app_name": appName,
-    "install_path": installPath,
-    "title": title,
-    "version": version,
-    "base_urls": baseURLs,
-    "can_run_offline": canRunOffline,
-    "egl_guid": eglGuid,
-    "executable": executable,
-    "install_size": installSize,
-    "install_tags": installTags,
-    "is_dlc": isDLC,
-    "launch_parameters": launchParameters,
-    "manifest_path": manifestPath,
-    "needs_verification": needsVerification,
-    "platform": platform,
-    "prereq_info": prereqInfo,
-    "requires_ot": requiresOt,
-    "save_path": savePath
-  };
+        "app_name": appName,
+        "install_path": installPath,
+        "title": title,
+        "version": version,
+        "base_urls": baseURLs,
+        "can_run_offline": canRunOffline,
+        "egl_guid": eglGuid,
+        "executable": executable,
+        "install_size": installSize,
+        "install_tags": installTags,
+        "is_dlc": isDLC,
+        "launch_parameters": launchParameters,
+        "manifest_path": manifestPath,
+        "needs_verification": needsVerification,
+        "platform": platform,
+        "prereq_info": prereqInfo,
+        "requires_ot": requiresOt,
+        "save_path": savePath
+      };
 
   factory InstalledGame.fromJson(Map<String, dynamic> obj) {
     final appName = obj["app_name"];
@@ -168,7 +173,7 @@ final class InstalledGame {
     final platform = obj["platform"];
     final prereqInfo = obj["prereq_info"];
     final requiresOt = obj["requires_ot"];
-    final savePath = obj["save_path"]; 
+    final savePath = obj["save_path"];
 
     return InstalledGame(
       appName: appName,
@@ -192,30 +197,30 @@ final class InstalledGame {
     );
   }
 
-  const InstalledGame({
-    required this.appName,
-    required this.installPath,
-    required this.title,
-    required this.version,
-    required this.baseURLs,
-    required this.canRunOffline,
-    required this.eglGuid,
-    required this.executable,
-    required this.installSize,
-    required this.installTags,
-    required this.isDLC,
-    required this.launchParameters,
-    required this.manifestPath,
-    required this.needsVerification,
-    required this.platform,
-    this.prereqInfo,
-    required this.requiresOt,
-    this.savePath
-  });
+  const InstalledGame(
+      {required this.appName,
+      required this.installPath,
+      required this.title,
+      required this.version,
+      required this.baseURLs,
+      required this.canRunOffline,
+      required this.eglGuid,
+      required this.executable,
+      required this.installSize,
+      required this.installTags,
+      required this.isDLC,
+      required this.launchParameters,
+      required this.manifestPath,
+      required this.needsVerification,
+      required this.platform,
+      this.prereqInfo,
+      required this.requiresOt,
+      this.savePath});
 }
 
 extension InstalledGameList on List<InstalledGame> {
-  static List<InstalledGame> fromList(List<dynamic> list) => list.map<InstalledGame>((obj) => InstalledGame.fromJson(obj)).toList();
+  static List<InstalledGame> fromList(List<dynamic> list) =>
+      list.map<InstalledGame>((obj) => InstalledGame.fromJson(obj)).toList();
 }
 
 final class SaveGameFile {
@@ -224,27 +229,16 @@ final class SaveGameFile {
   final String manifestName;
   final DateTime? dateTime;
 
-  const SaveGameFile({
-    required this.appName,
-    required this.fileName,
-    required this.manifestName,
-    this.dateTime
-  });
+  const SaveGameFile(
+      {required this.appName,
+      required this.fileName,
+      required this.manifestName,
+      this.dateTime});
 }
 
-enum SaveGameStatus {
-  localNewer,
-  remoteNewer,
-  sameAge,
-  noSave
-}
+enum SaveGameStatus { localNewer, remoteNewer, sameAge, noSave }
 
-enum VerifyResult {
-  hashMatch,
-  hashMismatch,
-  fileMissing,
-  otherError
-}
+enum VerifyResult { hashMatch, hashMismatch, fileMissing, otherError }
 
 final class LaunchParameters {
   final List<String> gameParameters;
@@ -258,16 +252,15 @@ final class LaunchParameters {
   final String preLaunchCommand;
   final bool preLaunchWait;
 
-  const LaunchParameters({
-    required this.gameParameters,
-    required this.gameExecutable,
-    required this.gameDirectory,
-    required this.eglParameters,
-    required this.launchCommand,
-    required this.workingDirectory,
-    required this.userParameters,
-    required this.environment,
-    required this.preLaunchCommand,
-    required this.preLaunchWait
-  });
+  const LaunchParameters(
+      {required this.gameParameters,
+      required this.gameExecutable,
+      required this.gameDirectory,
+      required this.eglParameters,
+      required this.launchCommand,
+      required this.workingDirectory,
+      required this.userParameters,
+      required this.environment,
+      required this.preLaunchCommand,
+      required this.preLaunchWait});
 }

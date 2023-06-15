@@ -14,16 +14,10 @@ void statusTest() async {
   late Status status;
 
   setUp(() async {
-    status = await LegendaryStreamClient(
-      LegendaryProcess(
-        stdout: Stream.fromIterable(
-          [
-            jsonEncode(correctStatus)
-          ]
-        ),
-        stderr: Stream.empty()
-      )
-    ).status();
+    status = await LegendaryStreamClient(LegendaryProcess(
+            stdout: Stream.fromIterable([jsonEncode(correctStatus)]),
+            stderr: Stream.empty()))
+        .status();
   });
 
   test("status is a Status", () {

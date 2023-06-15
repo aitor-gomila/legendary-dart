@@ -8,9 +8,8 @@ Future<String> watchStreamAndReturnSum(Stream<String> input) async {
   return output;
 }
 
-Future<void> watchStreamAndWatchForString(Stream<String> input, {
-  required String string
-}) async {
+Future<void> watchStreamAndWatchForString(Stream<String> input,
+    {required String string}) async {
   bool success = false;
 
   await for (final line in input) {

@@ -1,11 +1,10 @@
 final class Status {
-  const Status({
-    required this.account,
-    required this.gamesAvailable,
-    required this.gamesInstalled,
-    required this.eglSyncEnabled,
-    required this.configDirectory
-  });
+  const Status(
+      {required this.account,
+      required this.gamesAvailable,
+      required this.gamesInstalled,
+      required this.eglSyncEnabled,
+      required this.configDirectory});
 
   final String account;
   final int gamesAvailable;
@@ -14,13 +13,13 @@ final class Status {
   final String? configDirectory;
 
   Map<String, dynamic> toJson() => {
-    "account": account,
-    "games_available": gamesAvailable,
-    "games_installed": gamesInstalled,
-    "egl_sync_enabled": eglSyncEnabled,
-    "config_directory": configDirectory,
-  };
-  
+        "account": account,
+        "games_available": gamesAvailable,
+        "games_installed": gamesInstalled,
+        "egl_sync_enabled": eglSyncEnabled,
+        "config_directory": configDirectory,
+      };
+
   factory Status.fromJson(Map<String, dynamic> obj) {
     final account = obj["account"];
     final gamesAvailable = obj["games_available"];

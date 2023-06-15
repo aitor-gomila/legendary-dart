@@ -13,12 +13,12 @@ abstract class ILegendaryBaseClient {
   Stream<int> move(String appName, String path);
   Future<Status> status();
   Stream<int> uninstall(String appName);
-  Future<void> setLogin(String code, { required String sid, required String token });
+  Future<void> setLogin(String code,
+      {String? sid, String? token});
   Future<void> deleteLogin();
   Future<void> cleanup();
   Stream<int> import(String appName, String location);
   Stream<int> verify(String appName);
-  
 }
 
 /// LegendaryProcess is an abstraction of processes
@@ -26,7 +26,7 @@ class LegendaryProcess {
   final Stream<String> stdout;
   final Stream<String> stderr;
 
-  LegendaryProcess({ required this.stdout, required this.stderr });
+  LegendaryProcess({required this.stdout, required this.stderr});
 }
 
 /// The abstract class from which most clients derive from
@@ -45,9 +45,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
 
     final json = jsonDecode(processedStream);
 
-    return InstalledGame.fromJson(
-      Map<String, dynamic>.from(json)
-    );
+    return InstalledGame.fromJson(Map<String, dynamic>.from(json));
   }
 
   @override
@@ -57,9 +55,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
 
     final json = jsonDecode(processedStream);
 
-    return GameList.fromList(
-      List<dynamic>.from(json)
-    );
+    return GameList.fromList(List<dynamic>.from(json));
   }
 
   @override
@@ -69,9 +65,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
 
     final json = jsonDecode(processedStream);
 
-    return InstalledGameList.fromList(
-      List<dynamic>.from(json)
-    );
+    return InstalledGameList.fromList(List<dynamic>.from(json));
   }
 
   @override
@@ -101,9 +95,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
 
     final json = jsonDecode(processedStream);
 
-    return Status.fromJson(
-      Map<String, dynamic>.from(json)
-    );
+    return Status.fromJson(Map<String, dynamic>.from(json));
   }
 
   @override
@@ -113,11 +105,13 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   }
 
   @override
-  Future<void> setLogin(String code, { required String sid, required String token }) async {
+  Future<void> setLogin(String code,
+      {String? sid, String? token}) async {
     final stream = await getStream(["auth", "--code", code]);
     final String successStatement = "[cli] INFO: Successfully logged in as ";
 
-    return await watchStreamAndWatchForString(stream.stderr, string: successStatement);
+    return await watchStreamAndWatchForString(stream.stderr,
+        string: successStatement);
   }
 
   @override
@@ -136,10 +130,8 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     final stream = await getStream(["cleanup"]);
     const String successStatement = "[cli] INFO: Cleanup complete! Removed";
 
-    return await watchStreamAndWatchForString(
-      stream.stderr,
-      string: successStatement
-    );
+    return await watchStreamAndWatchForString(stream.stderr,
+        string: successStatement);
   }
 
   @override

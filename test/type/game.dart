@@ -2,29 +2,19 @@ import 'package:legendary/legendary.dart';
 import 'package:test/test.dart';
 
 void gameTests() {
-  Game correctGame = Game(
-    appName: "example",
-    appTitle: "example",
-    assetInfos: {
-      "windows": GameAsset(
+  Game correctGame = Game(appName: "example", appTitle: "example", assetInfos: {
+    "windows": GameAsset(
         appName: "example",
         assetId: "",
         buildVersion: "",
         catalogItemId: "",
         labelName: "",
         namespace: "",
-        metadata: {}
-      )
-    },
-    metadata: {},
-    baseURLs: []
-  );
+        metadata: {})
+  }, metadata: {}, baseURLs: []);
 
   test("Empty map on Game.fromJson throws", () {
-    expect(
-      () => Game.fromJson({}),
-      throwsA(isA<NoSuchMethodError>())
-    );
+    expect(() => Game.fromJson({}), throwsA(isA<NoSuchMethodError>()));
   });
 
   test("Game.toJson is accurate", () {
