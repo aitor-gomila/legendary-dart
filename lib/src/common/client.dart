@@ -3,6 +3,25 @@ import 'dart:convert';
 import 'package:legendary/legendary.dart';
 import 'package:legendary/src/io/watch_stream.dart';
 
+/// The abstract interface for all Legendary clients
+abstract class ILegendaryBaseClient {
+  Future<InstalledGame> info(String appName);
+  Future<List<Game>> list();
+  Future<List<InstalledGame>> listInstalled();
+  Stream<String> launch(String appName);
+  Stream<int> install(String appName, String path);
+  Stream<int> move(String appName, String path);
+  Future<Status> status();
+  Stream<int> uninstall();
+  Future<void> setLogin(String code, { String sid, String token });
+  Future<void> deleteLogin();
+  Future<void> cleanup();
+  Stream<int> import(String appName, String location);
+  Stream<int> verify(String appName)
+  
+}
+
+/// LegendaryProcess is an abstraction of processes
 class LegendaryProcess {
   final Stream<String> stdout;
   final Stream<String> stderr;
@@ -10,7 +29,13 @@ class LegendaryProcess {
   LegendaryProcess({ required this.stdout, required this.stderr });
 }
 
-abstract class LegendaryBaseClient {
+/// The abstract class from which most clients derive from
+///
+/// All of the methods derive from the [getStream] method, which you must implement.
+abstract class LegendaryBaseClient implements ILegendaryBaseClient {
+  /// Runs a legendary process and get its result
+  ///
+  /// Must be implemented by child clients.
   Future<LegendaryProcess> getStream(List<String> arguments);
   Future<InstalledGame> info(String appName) async {
     final stream = await getStream(["info", appName]);
@@ -52,7 +77,7 @@ abstract class LegendaryBaseClient {
     yield* stream.stderr;
   }
 
-  Stream<int> install(String appName) async* {
+  Stream<int> install(String appName, String path) async* {
     // TODO: implement install
     throw UnimplementedError();
   }
