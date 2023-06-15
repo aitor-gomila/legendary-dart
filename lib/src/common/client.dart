@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:legendary/legendary.dart';
-import 'package:legendary/src/io/watch_stream.dart';
+import 'package:legendary/src/common/watch_stream.dart';
 
 /// The abstract interface for all Legendary clients
 abstract class ILegendaryBaseClient {
@@ -12,12 +12,12 @@ abstract class ILegendaryBaseClient {
   Stream<int> install(String appName, String path);
   Stream<int> move(String appName, String path);
   Future<Status> status();
-  Stream<int> uninstall();
-  Future<void> setLogin(String code, { String sid, String token });
+  Stream<int> uninstall(String appName);
+  Future<void> setLogin(String code, { required String sid, required String token });
   Future<void> deleteLogin();
   Future<void> cleanup();
   Stream<int> import(String appName, String location);
-  Stream<int> verify(String appName)
+  Stream<int> verify(String appName);
   
 }
 
@@ -37,6 +37,8 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   ///
   /// Must be implemented by child clients.
   Future<LegendaryProcess> getStream(List<String> arguments);
+
+  @override
   Future<InstalledGame> info(String appName) async {
     final stream = await getStream(["info", appName]);
     final processedStream = await watchStreamAndReturnSum(stream.stdout);
@@ -48,6 +50,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     );
   }
 
+  @override
   Future<List<Game>> list() async {
     final stream = await getStream(["list"]);
     final processedStream = await watchStreamAndReturnSum(stream.stdout);
@@ -59,6 +62,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     );
   }
 
+  @override
   Future<List<InstalledGame>> listInstalled() async {
     final stream = await getStream(["list-installed"]);
     final String processedStream = await watchStreamAndReturnSum(stream.stdout);
@@ -70,6 +74,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     );
   }
 
+  @override
   Stream<String> launch(String appName) async* {
     final stream = await getStream(["launch", appName]);
 
@@ -77,16 +82,19 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     yield* stream.stderr;
   }
 
+  @override
   Stream<int> install(String appName, String path) async* {
     // TODO: implement install
     throw UnimplementedError();
   }
 
+  @override
   Stream<int> move(String appName, String path) async* {
     // TODO: implement move
     throw UnimplementedError();
   }
 
+  @override
   Future<Status> status() async {
     final stream = await getStream(["status"]);
     final processedStream = await watchStreamAndReturnSum(stream.stdout);
@@ -98,18 +106,21 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     );
   }
 
+  @override
   Stream<int> uninstall(String appName) {
     // TODO: implement uninstall
     throw UnimplementedError();
   }
 
-  Future<void> setLogin(String code, { sid, token }) async {
+  @override
+  Future<void> setLogin(String code, { required String sid, required String token }) async {
     final stream = await getStream(["auth", "--code", code]);
     final String successStatement = "[cli] INFO: Successfully logged in as ";
 
     return await watchStreamAndWatchForString(stream.stderr, string: successStatement);
   }
 
+  @override
   Future<void> deleteLogin() async {
     final stream = await getStream(["auth", "--delete"]);
     const String successStatement = "[cli] INFO: User data deleted.";
@@ -120,6 +131,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     );
   }
 
+  @override
   Future<void> cleanup() async {
     final stream = await getStream(["cleanup"]);
     const String successStatement = "[cli] INFO: Cleanup complete! Removed";
@@ -130,11 +142,13 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     );
   }
 
+  @override
   Stream<int> import(String appName, String location) {
     // TODO: implement import
     throw UnimplementedError();
   }
 
+  @override
   Stream<int> verify(String appName) {
     // TODO: implement verify
     throw UnimplementedError();

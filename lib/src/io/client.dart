@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:legendary/legendary.dart';
-import 'package:legendary/src/io/stream_client.dart';
 
 // This client is intended for end users.
 // You spawn the class, give it the path to legendary,
