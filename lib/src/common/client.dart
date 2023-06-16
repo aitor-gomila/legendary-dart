@@ -4,6 +4,7 @@ import 'package:legendary/legendary.dart';
 import 'package:legendary/src/common/watch_stream.dart';
 
 /// The abstract interface for all Legendary clients
+/// created so that clients aren't allowed to use `getStream` and separation of concerns
 abstract class ILegendaryBaseClient {
   Future<InstalledGame> info(String appName);
   Future<List<Game>> list();
