@@ -252,6 +252,44 @@ final class LaunchParameters {
   final String preLaunchCommand;
   final bool preLaunchWait;
 
+  Map<String, dynamic> toJson() => {
+        "game_parameters": gameParameters,
+        "game_executable": gameExecutable,
+        "game_directory": gameDirectory,
+        "egl_parameters": eglParameters,
+        "launch_command": launchCommand,
+        "working_directory": workingDirectory,
+        "user_parameters": userParameters,
+        "environment": environment,
+        "pre_launch_command": preLaunchCommand,
+        "pre_launch_wait": preLaunchWait
+      };
+
+  factory LaunchParameters.fromJson(Map<String, dynamic> obj) {
+    final gameParameters = obj["game_parameters"];
+    final gameExecutable = obj["game_executable"];
+    final gameDirectory = obj["game_directory"];
+    final eglParameters = obj["egl_parameters"];
+    final launchCommand = obj["launch_command"];
+    final workingDirectory = obj["working_directory"];
+    final userParameters = obj["user_parameters"];
+    final environment = obj["environment"];
+    final preLaunchCommand = obj["pre_launch_command"];
+    final preLaunchWait = obj["pre_launch_wait"];
+
+    return LaunchParameters(
+        gameParameters: List<String>.from(gameParameters),
+        gameExecutable: gameExecutable,
+        gameDirectory: gameDirectory,
+        eglParameters: List<String>.from(eglParameters),
+        launchCommand: List<String>.from(launchCommand),
+        workingDirectory: workingDirectory,
+        userParameters: List<String>.from(userParameters),
+        environment: Map<String, String>.from(environment),
+        preLaunchCommand: preLaunchCommand,
+        preLaunchWait: preLaunchWait);
+  }
+
   const LaunchParameters(
       {required this.gameParameters,
       required this.gameExecutable,
