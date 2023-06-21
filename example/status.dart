@@ -1,11 +1,11 @@
 import 'package:legendary/legendary.dart';
 
 void main(argv) async {
-  final line = argv[0];
+  final legendaryPath = argv[0];
 
-  if (line == null) return;
+  if (legendaryPath == null) return;
 
-  final client = LegendaryClient(legendaryPath: line);
+  final client = LegendaryClient(legendaryPath: legendaryPath);
   final status = await client.status();
 
   print(status.toJson());

@@ -4,9 +4,9 @@ import 'package:legendary/legendary.dart';
 void main(argv) async {
   print("This will set your Legendary login.");
 
-  final line = argv[0];
+  final legendaryPath = argv[0];
 
-  if (line == null) return;
+  if (legendaryPath == null) return;
 
   print("Write your login code below:");
 
@@ -14,7 +14,7 @@ void main(argv) async {
 
   if (code == null) return;
 
-  final client = LegendaryClient(legendaryPath: line);
+  final client = LegendaryClient(legendaryPath: legendaryPath);
   await client.setLogin(code);
   print("Logged in");
 }

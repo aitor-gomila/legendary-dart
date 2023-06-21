@@ -4,11 +4,11 @@ void main(argv) async {
   print(
       "This will delete your Legendary login. You will need to login back afterwards.");
 
-  final line = argv[0];
+  final legendaryPath = argv[0];
 
-  if (line == null) return;
+  if (legendaryPath == null) return;
 
-  final client = LegendaryClient(legendaryPath: line);
+  final client = LegendaryClient(legendaryPath: legendaryPath);
   await client.deleteLogin();
   print("Logged out");
 }
