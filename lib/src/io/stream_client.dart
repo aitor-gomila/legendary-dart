@@ -11,5 +11,13 @@ class LegendaryStreamClient extends LegendaryBaseClient {
     return process;
   }
 
+  @override
+  Future<LegendaryProcess> launch(String appName) async {
+    return LegendaryProcess(
+      stdout: Stream.empty(),
+      stderr: Stream.empty()
+    );
+  }
+
   LegendaryStreamClient(this.process);
 }

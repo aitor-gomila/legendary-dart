@@ -9,7 +9,7 @@ abstract class ILegendaryBaseClient {
   Future<InstalledGame> info(String appName);
   Future<List<Game>> list();
   Future<List<InstalledGame>> listInstalled();
-  Stream<String> launch(String appName);
+  Future<LegendaryProcess> launch(String appName);
   Stream<int> install(String appName, String path);
   Stream<int> move(String appName, String path);
   Future<Status> status();
@@ -67,14 +67,6 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     final json = jsonDecode(processedStream);
 
     return InstalledGameList.fromList(List<dynamic>.from(json));
-  }
-
-  @override
-  Stream<String> launch(String appName) async* {
-    final stream = await getStream(["launch", appName]);
-
-    yield* stream.stdout;
-    yield* stream.stderr;
   }
 
   @override
@@ -143,7 +135,12 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
 
   @override
   Stream<int> verify(String appName) {
-    // TODO: implement verify
-    throw UnimplementedError();
+    final stream = await getStream(["verify", appName]);
+    const String successStatement = "[cli] INFO: Verification finished successfully.";
+
+    return await watchStreamAndWatchForString(
+      stream.stderr,
+      string: successStatement,
+    );
   }
 }
