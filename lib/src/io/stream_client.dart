@@ -1,4 +1,3 @@
-
 import 'package:legendary/legendary.dart';
 
 // Used for unit testing

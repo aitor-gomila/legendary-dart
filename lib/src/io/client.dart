@@ -18,7 +18,8 @@ class LegendaryClient extends LegendaryBaseClient {
 
   @override
   Future<LegendaryProcess> getStream(List<String> arguments) async {
-    final process = await Process.start(legendaryPath, [...arguments, "--json"]);
+    final process =
+        await Process.start(legendaryPath, [...arguments, "--json"]);
 
     return LegendaryProcess(
         stdout: process.stdout.transform(utf8.decoder),
@@ -32,22 +33,21 @@ class LegendaryClient extends LegendaryBaseClient {
     final json = jsonDecode(output);
     final launchParameters = LaunchParameters.fromJson(json);
 
-    final fullGameExecutablePath = join(launchParameters.gameDirectory, launchParameters.gameExecutable);
+    final fullGameExecutablePath =
+        join(launchParameters.gameDirectory, launchParameters.gameExecutable);
 
     final childProcess = await Process.start(
-      launchParameters.launchCommand[0],
-      [
-        fullGameExecutablePath,
-        ...launchParameters.gameParameters,
-        ...launchParameters.eglParameters,
-      ],
-      workingDirectory: launchParameters.workingDirectory,
-      environment: launchParameters.environment
-    );
+        launchParameters.launchCommand[0],
+        [
+          fullGameExecutablePath,
+          ...launchParameters.gameParameters,
+          ...launchParameters.eglParameters,
+        ],
+        workingDirectory: launchParameters.workingDirectory,
+        environment: launchParameters.environment);
 
     return LegendaryProcess(
-      stdout: childProcess.stdout.transform(utf8.decoder),
-      stderr: childProcess.stderr.transform(utf8.decoder)
-    );
+        stdout: childProcess.stdout.transform(utf8.decoder),
+        stderr: childProcess.stderr.transform(utf8.decoder));
   }
 }
