@@ -19,7 +19,7 @@ class LegendaryClient extends LegendaryBaseClient {
   @override
   Future<LegendaryProcess> getStream(List<String> arguments) async {
     final process =
-        await Process.start(legendaryPath, [...arguments, "--json"]);
+        await Process.start(legendaryPath, [...arguments, "--json", "-y"]);
 
     return LegendaryProcess(
         stdout: process.stdout.transform(utf8.decoder),
