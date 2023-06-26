@@ -2,7 +2,8 @@ import 'package:legendary/legendary.dart';
 import 'package:test/test.dart';
 
 void gameTests() {
-  final Game correctGame = Game(appName: "example", appTitle: "example", assetInfos: {
+  final Game correctGame =
+      Game(appName: "example", appTitle: "example", assetInfos: {
     "windows": GameAsset(
         appName: "example",
         assetId: "",
@@ -40,17 +41,16 @@ void gameTests() {
   });
 
   final LaunchParameters correctLaunchParameters = LaunchParameters(
-    gameParameters: [],
-    gameExecutable: "SonicMania.exe",
-    gameDirectory: "/home/aitor/Games/SonicMania",
-    eglParameters: ["-AUTH_LOGIN=unused"],
-    launchCommand: ["wine"],
-    workingDirectory: "/home/aitor/Games/SonicMania",
-    userParameters: [],
-    environment: {},
-    preLaunchCommand: "",
-    preLaunchWait: false
-  );
+      gameParameters: [],
+      gameExecutable: "SonicMania.exe",
+      gameDirectory: "/home/aitor/Games/SonicMania",
+      eglParameters: ["-AUTH_LOGIN=unused"],
+      launchCommand: ["wine"],
+      workingDirectory: "/home/aitor/Games/SonicMania",
+      userParameters: [],
+      environment: {},
+      preLaunchCommand: "",
+      preLaunchWait: false);
 
   test("LaunchParameters.fromJson is accurate", () {
     final launchParameters = {
@@ -66,6 +66,7 @@ void gameTests() {
       "pre_launch_wait": false
     };
 
-  expect(LaunchParameters.fromJson(launchParameters).toJson(), equals(correctLaunchParameters.toJson()));
+    expect(LaunchParameters.fromJson(launchParameters).toJson(),
+        equals(correctLaunchParameters.toJson()));
   });
 }
