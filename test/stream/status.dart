@@ -14,7 +14,8 @@ void statusTest() async {
 
   setUp(() async {
     status = await LegendaryStreamClient(LegendaryProcess(
-            stdout: Stream.fromIterable([jsonEncode(correctStatus)]),
+            stdout: Stream.fromIterable([jsonEncode(correctStatus)])
+                .transform(utf8.encoder),
             stderr: Stream.empty()))
         .status();
   });

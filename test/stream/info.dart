@@ -24,7 +24,8 @@ void infoTest() async {
 
   setUp(() async {
     info = await LegendaryStreamClient(LegendaryProcess(
-            stdout: Stream.fromIterable([jsonEncode(correctInstalledGame)]),
+            stdout: Stream.fromIterable([jsonEncode(correctInstalledGame)])
+                .transform(utf8.encoder),
             stderr: Stream.empty()))
         .info("example");
   });

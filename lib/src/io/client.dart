@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:path/path.dart';
 
 import 'package:legendary/legendary.dart';
-import 'package:legendary/src/common/watch_stream.dart';
 
 // This client is intended for end users.
 // You spawn the class, give it the path to legendary,
@@ -21,16 +20,19 @@ class LegendaryClient extends LegendaryBaseClient {
     final process =
         await Process.start(legendaryPath, [...arguments, "--json", "-y"]);
 
-    return LegendaryProcess(
-        stdout: process.stdout.transform(utf8.decoder),
-        stderr: process.stderr.transform(utf8.decoder));
+    return LegendaryProcess(stdout: process.stdout, stderr: process.stderr);
   }
 
   @override
   Future<LegendaryProcess> launch(String appName) async {
     final process = await getStream(["launch", appName]);
-    final output = await watchStreamAndReturnSum(process.stdout);
-    final json = jsonDecode(output);
+    var total = "";
+
+    await for (final line in process.stdout.transform(utf8.decoder)) {
+      total += line;
+    }
+
+    final json = jsonDecode(total);
     final launchParameters = LaunchParameters.fromJson(json);
 
     final fullGameExecutablePath =
@@ -47,7 +49,6 @@ class LegendaryClient extends LegendaryBaseClient {
         environment: launchParameters.environment);
 
     return LegendaryProcess(
-        stdout: childProcess.stdout.transform(utf8.decoder),
-        stderr: childProcess.stderr.transform(utf8.decoder));
+        stdout: childProcess.stdout, stderr: childProcess.stderr);
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:legendary/legendary.dart';
 
 void main(argv) async {
@@ -13,6 +12,6 @@ void main(argv) async {
   if (gameId == null) return;
 
   final childProcess = await client.launch(gameId);
-  stdout.addStream(childProcess.stdout.transform(utf8.encoder));
-  stderr.addStream(childProcess.stderr.transform(utf8.encoder));
+  stdout.addStream(childProcess.stdout);
+  stderr.addStream(childProcess.stderr);
 }

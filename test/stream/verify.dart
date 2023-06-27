@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:legendary/legendary.dart';
 
@@ -9,10 +10,11 @@ void verifyTest() async {
     final info = await LegendaryStreamClient(LegendaryProcess(
             stdout: Stream.empty(),
             stderr: Stream.fromIterable(
-                ['[cli] ERROR: Game "Anchovy" is not installed'])))
+                    ['[cli] ERROR: Game "Anchovy" is not installed'])
+                .transform(utf8.encoder)))
         .verify("Anchovy");
     infoError = await info.error;
-    infoProgress = info.progress;
+    infoProgress = info.data;
   });
 
   test("Not installed error throws", () {
