@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:legendary/legendary.dart';
-import 'package:legendary/src/io/stream_client.dart';
 
 void statusTest() async {
   final Status correctStatus = Status(
