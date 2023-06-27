@@ -10,7 +10,7 @@ void main(argv) async {
   final gameId = argv[1];
   if (gameId == null) return;
 
-  final verify = client.verify(gameId);
-  verify.listen((progress) => print(
+  final verify = await client.verify(gameId);
+  verify.progress.listen((progress) => print(
       "${progress.currentPart}/${progress.totalParts} ${progress.percentage}% ${progress.speed} ${progress.unit}"));
 }

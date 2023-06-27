@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:legendary/legendary.dart';
 import 'package:legendary/src/common/watch_stream.dart';
 
-class VerifyProgress {
+final class VerifyProgress {
   final int currentPart;
   final int totalParts;
   final double percentage;
   final double speed;
   final String unit;
 
-  VerifyProgress(
+  const VerifyProgress(
       {required this.currentPart,
       required this.totalParts,
       required this.percentage,
@@ -18,14 +18,33 @@ class VerifyProgress {
       required this.unit});
 }
 
-class InstallProgress {
+/// Given by `ILegendaryBaseClient.verify` to get `stdout`, `stderr`, `progress`, and `error` combined
+final class VerifyResult {
+  final Stream<List<int>> stdout;
+  final Stream<List<int>> stderr;
+  final Stream<VerifyProgress> progress;
+
+  /// This should .catch and never return anything
+  /// Use after progress stream closes to check for errors
+  final Future<CommonError?> error;
+
+  const VerifyResult(
+      {required this.stdout,
+      required this.stderr,
+      required this.progress,
+      required this.error});
+}
+
+enum CommonError { alreadyInstalled, notInstalled }
+
+final class InstallProgress {
   final double percentage;
   final int currentPart;
   final int totalParts;
   final Duration runningFor;
   final Duration estimatedTimeOfArrival;
 
-  InstallProgress(
+  const InstallProgress(
       {required this.percentage,
       required this.currentPart,
       required this.totalParts,
@@ -34,11 +53,11 @@ class InstallProgress {
 }
 
 /// LegendaryProcess is an abstraction of processes
-class LegendaryProcess {
+final class LegendaryProcess {
   final Stream<String> stdout;
   final Stream<String> stderr;
 
-  LegendaryProcess({required this.stdout, required this.stderr});
+  const LegendaryProcess({required this.stdout, required this.stderr});
 }
 
 /// The abstract interface for all Legendary clients
@@ -56,7 +75,7 @@ abstract class ILegendaryBaseClient {
   Future<void> deleteLogin();
   Future<void> cleanup();
   Stream<int> import(String appName, String location);
-  Stream<VerifyProgress> verify(String appName);
+  Future<VerifyResult> verify(String appName);
 }
 
 /// The abstract class from which most clients derive from
@@ -118,23 +137,28 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
       final estimatedTimeOfArrivalMinutes = matches?.group(8)!;
       final estimatedTimeOfArrivalSeconds = matches?.group(9)!;
 
-      if (percentage == null || currentPart == null || totalParts == null || runningForHours == null || runningForMinutes == null || runningForSeconds == null || estimatedTimeOfArrivalHours == null || estimatedTimeOfArrivalMinutes == null || estimatedTimeOfArrivalSeconds == null)
-        continue;
+      if (percentage == null ||
+          currentPart == null ||
+          totalParts == null ||
+          runningForHours == null ||
+          runningForMinutes == null ||
+          runningForSeconds == null ||
+          estimatedTimeOfArrivalHours == null ||
+          estimatedTimeOfArrivalMinutes == null ||
+          estimatedTimeOfArrivalSeconds == null) continue;
 
       yield InstallProgress(
         percentage: double.parse(percentage),
         currentPart: int.parse(currentPart),
         totalParts: int.parse(totalParts),
         runningFor: Duration(
-          hours: int.parse(runningForHours),
-          minutes: int.parse(runningForMinutes),
-          seconds: int.parse(runningForSeconds)
-        ),
+            hours: int.parse(runningForHours),
+            minutes: int.parse(runningForMinutes),
+            seconds: int.parse(runningForSeconds)),
         estimatedTimeOfArrival: Duration(
-          hours: int.parse(estimatedTimeOfArrivalHours),
-          minutes: int.parse(estimatedTimeOfArrivalMinutes),
-          seconds: int.parse(estimatedTimeOfArrivalSeconds)
-        ),
+            hours: int.parse(estimatedTimeOfArrivalHours),
+            minutes: int.parse(estimatedTimeOfArrivalMinutes),
+            seconds: int.parse(estimatedTimeOfArrivalSeconds)),
       );
     }
   }
@@ -197,32 +221,48 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   }
 
   @override
-  Stream<VerifyProgress> verify(String appName) async* {
+  Future<VerifyResult> verify(String appName) async {
     final stream = await getStream(["verify", appName]);
-    final exp = RegExp(
-        r'^Verification progress: (\d+)\/(\d+)\s+\((\d+\.\d+)%\)\s+\[(\d+\.\d+)\s([a-z/]+)',
-        caseSensitive: false);
 
-    await for (final line in stream.stdout) {
-      final matches = exp.firstMatch(line);
-      final currentPart = matches?.group(1);
-      final totalParts = matches?.group(2);
-      final percentage = matches?.group(3);
-      final speed = matches?.group(4);
-      final unit = matches?.group(5);
-
-      if (currentPart == null ||
-          totalParts == null ||
-          percentage == null ||
-          speed == null ||
-          unit == null) throw "some field is null (line: $line)";
-
-      yield VerifyProgress(
-          currentPart: int.parse(currentPart),
-          totalParts: int.parse(totalParts),
-          percentage: double.parse(percentage),
-          speed: double.parse(speed),
-          unit: unit);
+    // handles edge cases, ex. "game not installed"
+    Future<CommonError?> getError() async {
+      await for (final line in stream.stderr) {
+        if (line == '[cli] ERROR: Game "$appName" is not installed')
+          return CommonError.notInstalled;
+      }
     }
+
+    Stream<VerifyProgress> getProgress() async* {
+      final exp = RegExp(
+          r'^Verification progress: (\d+)\/(\d+)\s+\((\d+\.\d+)%\)\s+\[(\d+\.\d+)\s([a-z/]+)',
+          caseSensitive: false);
+      await for (final line in stream.stdout) {
+        final matches = exp.firstMatch(line);
+        final currentPart = matches?.group(1);
+        final totalParts = matches?.group(2);
+        final percentage = matches?.group(3);
+        final speed = matches?.group(4);
+        final unit = matches?.group(5);
+
+        if (currentPart == null ||
+            totalParts == null ||
+            percentage == null ||
+            speed == null ||
+            unit == null) throw "some field is null (line: $line)";
+
+        yield VerifyProgress(
+            currentPart: int.parse(currentPart),
+            totalParts: int.parse(totalParts),
+            percentage: double.parse(percentage),
+            speed: double.parse(speed),
+            unit: unit);
+      }
+    }
+
+    return VerifyResult(
+        stdout: stream.stdout.transform(utf8.encoder),
+        stderr: stream.stderr.transform(utf8.encoder),
+        progress: getProgress(),
+        error: getError());
   }
 }
