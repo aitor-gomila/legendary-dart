@@ -238,8 +238,6 @@ final class SaveGameFile {
 
 enum SaveGameStatus { localNewer, remoteNewer, sameAge, noSave }
 
-enum VerifyResult { hashMatch, hashMismatch, fileMissing, otherError }
-
 final class LaunchParameters {
   final List<String> gameParameters;
   final String gameExecutable;
