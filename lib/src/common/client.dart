@@ -165,8 +165,12 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
 
   @override
   Stream<int> move(String appName, String path) async* {
-    // TODO: implement move
-    throw UnimplementedError();
+    final stream = await getStream(["move", appName, path]);
+
+    await for (final line in stream.stderr) {
+      // If finishes succesfully, return
+      if (line == "[cli] INFO: Finished.") return;
+    }
   }
 
   @override
