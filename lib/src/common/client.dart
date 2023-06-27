@@ -70,7 +70,7 @@ abstract class ILegendaryBaseClient {
   Stream<InstallProgress> install(String appName, String path);
   Stream<int> move(String appName, String path);
   Future<Status> status();
-  Stream<int> uninstall(String appName);
+  Future<void> uninstall(String appName);
   Future<void> setLogin(String code, {String? sid, String? token});
   Future<void> deleteLogin();
   Future<void> cleanup();
@@ -180,9 +180,12 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   }
 
   @override
-  Stream<int> uninstall(String appName) {
-    // TODO: implement uninstall
-    throw UnimplementedError();
+  Future<void> uninstall(String appName) async {
+    final stream = await getStream(["uninstall", appName]);
+
+    await for (final line in stream.stderr) {
+      if (line == "[cli] INFO: Game has been uninstalled.") return;
+    }
   }
 
   @override
