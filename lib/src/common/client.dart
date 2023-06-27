@@ -233,17 +233,24 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
 
     // handles edge cases, ex. "game not installed"
     Future<CommonError?> getError() async {
-      await for (final line in stream.stderr) {
-        if (line == '[cli] ERROR: Game "$appName" is not installed')
-          return CommonError.notInstalled;
-      }
+      final controller = StreamController();
+
+      // Listen to stderr
+      stream.stderr.listen((line) {
+        // if there is any error, return it
+        if (line == '[cli] ERROR: Game "$appName" is not installed') controller.add(CommonError.notInstalled);
+      });
+
+      return controller.stream;
     }
 
-    Stream<VerifyProgress> getProgress() async* {
+    Stream<VerifyProgress> getProgress() {
+      final controller = StreamController();
       final exp = RegExp(
           r'^Verification progress: (\d+)\/(\d+)\s+\((\d+\.\d+)%\)\s+\[(\d+\.\d+)\s([a-z/]+)',
           caseSensitive: false);
-      await for (final line in stream.stdout) {
+
+      stream.stdout.listen((line) {
         final matches = exp.firstMatch(line);
         final currentPart = matches?.group(1);
         final totalParts = matches?.group(2);
@@ -257,13 +264,15 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
             speed == null ||
             unit == null) throw "some field is null (line: $line)";
 
-        yield VerifyProgress(
+        controller.add(VerifyProgress(
             currentPart: int.parse(currentPart),
             totalParts: int.parse(totalParts),
             percentage: double.parse(percentage),
             speed: double.parse(speed),
-            unit: unit);
-      }
+            unit: unit));
+      });
+
+      return controller;
     }
 
     return VerifyResult(
