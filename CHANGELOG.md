@@ -1,8 +1,8 @@
 # 0.1.1
 
 - **BREAKING:** renamed `LegendaryProcessClient` to `LegendaryClient`
-- Implemented methods `launch`, `verify`, `install`.
 - Publish docs to https://aitor-gomila.github.io/legendary-dart
+- Implemented methods `launch`, `verify`, `install`, `import`.
 
 ## 0.1.0
 
