@@ -283,19 +283,14 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     final stream = await getStream(["verify", appName]);
 
     // handles edge cases, ex. "game not installed"
-    Future<CommonError?> getError() {
-      final controller = Completer<CommonError?>();
-
+    Future<CommonError?> getError() async {
       // Listen to stderr
-      stream.stderr.transform(utf8.decoder).listen((line) {
+      await for (final line in stream.stderr.transform(utf8.decoder)) {
         // if there is any error, return it
-        if (line == '[cli] ERROR: Game "$appName" is not installed') {
-          controller.complete(CommonError.notInstalled);
-          return;
-        }
-      });
-
-      return controller.future;
+        if (line != '[cli] ERROR: Game "$appName" is not installed') continue;
+        return CommonError.notInstalled;
+      }
+      throw CommonError.notSuccesful;
     }
 
     Stream<VerifyProgress> getProgress() {
