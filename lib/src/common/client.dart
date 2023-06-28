@@ -40,6 +40,8 @@ enum CommonError {
   pathNotExist,
   gameNotExists,
   gameNotInstalled,
+
+  /// describes cases where a specific error hasn't been found, however no data was found either
   notSuccesful
 }
 
