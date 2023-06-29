@@ -287,10 +287,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
       // Listen to stderr
       await for (final line in stream.stderr.transform(utf8.decoder)) {
         // if there is any error, return it
-        if (line != '[cli] ERROR: Game "$appName" is not installed') continue;
-        return CommonError.notInstalled;
-      }
-      throw CommonError.notSuccesful;
+      return null;
     }
 
     Stream<VerifyProgress> getProgress() {
