@@ -290,41 +290,42 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
       return null;
     }
 
-    Stream<VerifyProgress> getProgress() {
-      final controller = StreamController<VerifyProgress>();
-      final exp = RegExp(
-          r'^Verification progress: (\d+)\/(\d+)\s+\((\d+\.\d+)%\)\s+\[(\d+\.\d+)\s([a-z/]+)',
-          caseSensitive: false);
+      Stream<VerifyProgress> getProgress() {
+        final controller = StreamController<VerifyProgress>();
+        final exp = RegExp(
+            r'^Verification progress: (\d+)\/(\d+)\s+\((\d+\.\d+)%\)\s+\[(\d+\.\d+)\s([a-z/]+)',
+            caseSensitive: false);
 
-      stream.stdout.transform(utf8.decoder).listen((line) {
-        final matches = exp.firstMatch(line);
-        final currentPart = matches?.group(1);
-        final totalParts = matches?.group(2);
-        final percentage = matches?.group(3);
-        final speed = matches?.group(4);
-        final unit = matches?.group(5);
+        stream.stdout.transform(utf8.decoder).listen((line) {
+          final matches = exp.firstMatch(line);
+          final currentPart = matches?.group(1);
+          final totalParts = matches?.group(2);
+          final percentage = matches?.group(3);
+          final speed = matches?.group(4);
+          final unit = matches?.group(5);
 
-        if (currentPart == null ||
-            totalParts == null ||
-            percentage == null ||
-            speed == null ||
-            unit == null) throw "some field is null (line: $line)";
+          if (currentPart == null ||
+              totalParts == null ||
+              percentage == null ||
+              speed == null ||
+              unit == null) throw "some field is null (line: $line)";
 
-        controller.add(VerifyProgress(
-            currentPart: int.parse(currentPart),
-            totalParts: int.parse(totalParts),
-            percentage: double.parse(percentage),
-            speed: double.parse(speed),
-            unit: unit));
-      });
+          controller.add(VerifyProgress(
+              currentPart: int.parse(currentPart),
+              totalParts: int.parse(totalParts),
+              percentage: double.parse(percentage),
+              speed: double.parse(speed),
+              unit: unit));
+        });
 
-      return controller.stream;
+        return controller.stream;
+      }
+
+      return Result<Stream<VerifyProgress>>(
+          stdout: stream.stdout,
+          stderr: stream.stderr,
+          data: getProgress(),
+          error: getError());
     }
-
-    return Result<Stream<VerifyProgress>>(
-        stdout: stream.stdout,
-        stderr: stream.stderr,
-        data: getProgress(),
-        error: getError());
   }
 }
