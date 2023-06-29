@@ -3,7 +3,6 @@ import 'package:test/test.dart';
 import 'package:legendary/legendary.dart';
 
 void infoTest() async {
-  late InstalledGame info;
   final InstalledGame correctInstalledGame = InstalledGame(
       appName: "example",
       installPath: "",
@@ -22,15 +21,12 @@ void infoTest() async {
       platform: "",
       requiresOt: false);
 
-  setUp(() async {
-    info = await LegendaryStreamClient(LegendaryProcess(
+  test("InstalledGame fields are correct", () async {
+    final info = await LegendaryStreamClient(LegendaryProcess(
             stdout: Stream.fromIterable([jsonEncode(correctInstalledGame)])
                 .transform(utf8.encoder),
             stderr: Stream.empty()))
         .info("example");
-  });
-
-  test("InstalledGame fields are correct", () {
     expect(info.toJson(), equals(correctInstalledGame.toJson()));
   });
 }
