@@ -292,7 +292,6 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
         final notExistRegExp = RegExp(
             r'\[cli\] ERROR: Install path "[a-zA-Z/\\]+" does not exist, make sure all necessary mounts are available\. If you previously deleted the game folder without uninstalling, run "legendary uninstall -y [a-zA-Z]+" and reinstall from scratch\.');
         if (notExistRegExp.hasMatch(line)) return CommonError.pathNotExist;
-        return null;
       }
       return null;
     }
