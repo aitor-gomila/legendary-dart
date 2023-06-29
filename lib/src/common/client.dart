@@ -38,8 +38,7 @@ enum CommonError {
   alreadyInstalled,
   notInstalled,
   pathNotExist,
-  gameNotExists,
-  gameNotInstalled,
+  gameNotExist,
 
   /// describes cases where a specific error hasn't been found, however no data was found either
   notSuccesful
@@ -271,7 +270,7 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
       if (line == '[cli] INFO: Game "$appName" has been imported.') return;
       if (line ==
           '[cli] ERROR: Could not find "$appName" in list of available games, did you type the name correctly?') {
-        throw CommonError.gameNotExists;
+        throw CommonError.gameNotExist;
       }
     }
 
