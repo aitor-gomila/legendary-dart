@@ -287,8 +287,11 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
       // Listen to stderr
       await for (final line in stream.stderr.transform(utf8.decoder)) {
         // if there is any error, return it
-      return null;
-    }
+        final notExistRegExp = RegExp(
+            r'\[cli\] ERROR: Install path "[a-zA-Z\/\\]+" does not exist, make sure all necessary mounts are available\. If you previously deleted the game folder without uninstalling, run "legendary uninstall -y [a-zA-Z]+" and reinstall from scratch\.');
+        if (notExistRegExp.hasMatch(line)) return CommonError.pathNotExist;
+        return null;
+      }
 
       Stream<VerifyProgress> getProgress() {
         final controller = StreamController<VerifyProgress>();
