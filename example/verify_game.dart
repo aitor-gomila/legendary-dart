@@ -11,6 +11,7 @@ void main(argv) async {
   if (gameId == null) return;
 
   final verify = await client.verify(gameId);
-  verify.data.listen((progress) => print(
+  final data = await verify.data;
+  data.listen((progress) => print(
       "${progress.currentPart}/${progress.totalParts} ${progress.percentage}% ${progress.speed} ${progress.unit}"));
 }

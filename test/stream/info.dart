@@ -27,6 +27,7 @@ void infoTest() async {
                 .transform(utf8.encoder),
             stderr: Stream.empty()))
         .info("example");
-    expect(info.toJson(), equals(correctInstalledGame.toJson()));
+    final data = await info.data;
+    expect(data.toJson(), equals(correctInstalledGame.toJson()));
   });
 }

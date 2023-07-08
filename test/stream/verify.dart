@@ -40,7 +40,8 @@ void verifyTest() async {
             ]).transform(utf8.encoder)))
         .verify("Anchovy");
 
-    final progress = await info.data.toList();
+    final data = await info.data;
+    final progress = await data.toList();
 
     expect(await info.error, equals(null));
     expect(

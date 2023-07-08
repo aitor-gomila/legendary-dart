@@ -14,6 +14,7 @@ void main(argv) async {
   if (gamePath == null) return;
 
   final install = await client.install(gameId, gamePath);
-  install.data.listen((progress) => print(
+  final data = await install.data;
+  data.listen((progress) => print(
       "${progress.currentPart}/${progress.totalParts} ${progress.percentage}% ${progress.runningFor.toString()} ${progress.estimatedTimeOfArrival.toString()}"));
 }

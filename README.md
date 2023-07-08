@@ -17,9 +17,9 @@ import 'package:legendary/legendary.dart';
 
 void main() async {
     final client = LegendaryClient(legendaryPath: "absolute/path/to/legendary.exe");
-    await client.setLogin("auth_token", token: "", sid: "");
-    await client.status();
-    await client.list();
+    await (await client.setLogin("auth_token", token: "", sid: "")).data;
+    await (await client.status()).stdout;
+    await (await client.list()).stderr;
 }
 ```
 

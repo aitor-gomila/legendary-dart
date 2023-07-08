@@ -7,5 +7,6 @@ void main(argv) async {
 
   final client = LegendaryClient(legendaryPath: legendaryPath);
   final list = await client.listInstalled();
-  print(list.map((e) => e.toJson()));
+  final data = await list.data;
+  print(data.map((e) => e.toJson()));
 }

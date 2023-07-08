@@ -22,7 +22,7 @@ final class VerifyProgress {
 final class Result<T> {
   final Stream<List<int>> stdout;
   final Stream<List<int>> stderr;
-  final T data;
+  final FutureOr<T> data;
 
   /// Use after progress stream closes to check for errors
   final Future<CommonError?>? error;
@@ -70,9 +70,9 @@ final class LegendaryProcess {
 /// The abstract interface for all Legendary clients
 /// created so that clients aren't allowed to use `getStream` and separation of concerns
 abstract class ILegendaryBaseClient {
-  Future<InstalledGame> info(String appName);
-  Future<List<Game>> list();
-  Future<List<InstalledGame>> listInstalled();
+  Future<Result<InstalledGame>> info(String appName);
+  Future<Result<List<Game>>> list();
+  Future<Result<List<InstalledGame>>> listInstalled();
   Future<LegendaryProcess> launch(String appName);
   Future<Result<Stream<InstallProgress>>> install(String appName, String path);
   Future<void> move(String appName, String path);
@@ -95,45 +95,53 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   Future<LegendaryProcess> getStream(List<String> arguments);
 
   @override
-  Future<InstalledGame> info(String appName) async {
+  Future<Result<InstalledGame>> info(String appName) async {
     final stream = await getStream(["info", appName]);
-    var total = "";
 
-    await for (final line in stream.stdout.transform(utf8.decoder)) {
-      total += line;
+    Future<InstalledGame> getGameInfo() async {
+      final total = await stream.stdout.transform(utf8.decoder).drain();
+
+      final json = jsonDecode(total);
+
+      return InstalledGame.fromJson(Map<String, dynamic>.from(json));
     }
 
-    final json = jsonDecode(total);
-
-    return InstalledGame.fromJson(Map<String, dynamic>.from(json));
+    return Result(
+        stdout: stream.stdout,
+        stderr: stream.stderr,
+        data: await getGameInfo());
   }
 
   @override
-  Future<List<Game>> list() async {
+  Future<Result<List<Game>>> list() async {
     final stream = await getStream(["list"]);
-    var total = "";
 
-    await for (final line in stream.stdout.transform(utf8.decoder)) {
-      total += line;
+    Future<List<Game>> getList() async {
+      final total = await stream.stdout.transform(utf8.decoder).drain();
+
+      final json = jsonDecode(total);
+
+      return GameList.fromList(List<dynamic>.from(json));
     }
 
-    final json = jsonDecode(total);
-
-    return GameList.fromList(List<dynamic>.from(json));
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getList());
   }
 
   @override
-  Future<List<InstalledGame>> listInstalled() async {
+  Future<Result<List<InstalledGame>>> listInstalled() async {
     final stream = await getStream(["list-installed"]);
-    var total = "";
 
-    await for (final line in stream.stdout.transform(utf8.decoder)) {
-      total += line;
+    Future<List<InstalledGame>> getList() async {
+      final total = await stream.stdout.transform(utf8.decoder).drain();
+
+      final json = jsonDecode(total);
+
+      return InstalledGameList.fromList(List<dynamic>.from(json));
     }
 
-    final json = jsonDecode(total);
-
-    return InstalledGameList.fromList(List<dynamic>.from(json));
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getList());
   }
 
   @override

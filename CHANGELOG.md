@@ -1,3 +1,7 @@
+# 0.1.2
+
+- **BREAKING:** made methods `info`, `list` and `listInstalled` use `Result`. Now, to to use them, you must `info = await client.info()` and then `await info.data`
+
 # 0.1.1
 
 - **BREAKING:** renamed `LegendaryProcessClient` to `LegendaryClient`
