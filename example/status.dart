@@ -6,7 +6,7 @@ void main(argv) async {
   if (legendaryPath == null) return;
 
   final client = LegendaryClient(legendaryPath: legendaryPath);
-  final status = await client.status();
+  final status = await (await client.status()).data;
 
   print(status.toJson());
 }

@@ -216,17 +216,19 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   }
 
   @override
-  Future<Status> status() async {
+  Future<Result<Status>> status() async {
     final stream = await getStream(["status"]);
-    var total = "";
 
-    await for (final line in stream.stdout.transform(utf8.decoder)) {
-      total += line;
+    Future<Status> getData() async {
+      final total =
+          (await stream.stdout.transform(utf8.decoder).toList()).join();
+      final json = jsonDecode(total);
+
+      return Status.fromJson(Map<String, dynamic>.from(json));
     }
 
-    final json = jsonDecode(total);
-
-    return Status.fromJson(Map<String, dynamic>.from(json));
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getData());
   }
 
   @override
