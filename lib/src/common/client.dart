@@ -76,7 +76,7 @@ abstract class ILegendaryBaseClient {
   Future<LegendaryProcess> launch(String appName);
   Future<Result<Stream<InstallProgress>>> install(String appName, String path);
   Future<void> move(String appName, String path);
-  Future<Status> status();
+  Future<Result<Status>> status();
   Future<void> uninstall(String appName);
   Future<void> setLogin(String code, {String? sid, String? token});
   Future<void> deleteLogin();
@@ -99,7 +99,8 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     final stream = await getStream(["info", appName]);
 
     Future<InstalledGame> getGameInfo() async {
-      final total = await stream.stdout.transform(utf8.decoder).drain();
+      final total =
+          (await stream.stdout.transform(utf8.decoder).toList()).join();
 
       final json = jsonDecode(total);
 
@@ -117,7 +118,8 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     final stream = await getStream(["list"]);
 
     Future<List<Game>> getList() async {
-      final total = await stream.stdout.transform(utf8.decoder).drain();
+      final total =
+          (await stream.stdout.transform(utf8.decoder).toList()).join();
 
       final json = jsonDecode(total);
 
@@ -133,7 +135,8 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
     final stream = await getStream(["list-installed"]);
 
     Future<List<InstalledGame>> getList() async {
-      final total = await stream.stdout.transform(utf8.decoder).drain();
+      final total =
+          (await stream.stdout.transform(utf8.decoder).toList()).join();
 
       final json = jsonDecode(total);
 
