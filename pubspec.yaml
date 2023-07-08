@@ -1,6 +1,6 @@
 name: legendary
 description: A client for interacting with Legendary Epic Games Launcher type-safely.
-version: 0.1.1
+version: 0.1.2
 repository: https://github.com/aitor-gomila/legendary-dart
 
 environment:
