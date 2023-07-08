@@ -75,13 +75,13 @@ abstract class ILegendaryBaseClient {
   Future<Result<List<InstalledGame>>> listInstalled();
   Future<LegendaryProcess> launch(String appName);
   Future<Result<Stream<InstallProgress>>> install(String appName, String path);
-  Future<void> move(String appName, String path);
+  Future<Result<void>> move(String appName, String path);
   Future<Result<Status>> status();
-  Future<void> uninstall(String appName);
-  Future<void> setLogin(String code, {String? sid, String? token});
-  Future<void> deleteLogin();
-  Future<void> cleanup();
-  Future<void> import(String appName, String location);
+  Future<Result<void>> uninstall(String appName);
+  Future<Result<void>> setLogin(String code, {String? sid, String? token});
+  Future<Result<void>> deleteLogin();
+  Future<Result<void>> cleanup();
+  Future<Result<void>> import(String appName, String location);
   Future<Result<Stream<VerifyProgress>>> verify(String appName);
 }
 
@@ -205,14 +205,19 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   }
 
   @override
-  Future<void> move(String appName, String path) async {
+  Future<Result<void>> move(String appName, String path) async {
     final stream = await getStream(["move", appName, path]);
 
-    await for (final line in stream.stderr.transform(utf8.decoder)) {
-      if (line == "[cli] INFO: Finished.") return;
+    Future<void> getData() async {
+      await for (final line in stream.stderr.transform(utf8.decoder)) {
+        if (line == "[cli] INFO: Finished.") return;
+      }
+
+      throw CommonError.notSuccesful;
     }
 
-    throw CommonError.notSuccesful;
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getData());
   }
 
   @override
@@ -232,62 +237,88 @@ abstract class LegendaryBaseClient implements ILegendaryBaseClient {
   }
 
   @override
-  Future<void> uninstall(String appName) async {
+  Future<Result<void>> uninstall(String appName) async {
     final stream = await getStream(["uninstall", appName]);
 
-    await for (final line in stream.stderr.transform(utf8.decoder)) {
-      if (line == "[cli] INFO: Game has been uninstalled.") return;
+    Future<void> getData() async {
+      await for (final line in stream.stderr.transform(utf8.decoder)) {
+        if (line == "[cli] INFO: Game has been uninstalled.") return;
+      }
+
+      throw CommonError.notSuccesful;
     }
 
-    throw CommonError.notSuccesful;
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getData());
   }
 
   @override
-  Future<void> setLogin(String code, {String? sid, String? token}) async {
+  Future<Result<void>> setLogin(String code,
+      {String? sid, String? token}) async {
     final stream = await getStream(["auth", "--code", code]);
 
-    await for (final line in stream.stderr.transform(utf8.decoder)) {
-      if (line.startsWith("[cli] INFO: Successfully logged in as ")) return;
+    Future<void> getData() async {
+      await for (final line in stream.stderr.transform(utf8.decoder)) {
+        if (line.startsWith("[cli] INFO: Successfully logged in as ")) return;
+      }
+
+      throw CommonError.notSuccesful;
     }
 
-    throw CommonError.notSuccesful;
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getData());
   }
 
   @override
-  Future<void> deleteLogin() async {
+  Future<Result<void>> deleteLogin() async {
     final stream = await getStream(["auth", "--delete"]);
 
-    await for (final line in stream.stderr.transform(utf8.decoder)) {
-      if (line == "[cli] INFO: User data deleted.") return;
+    Future<void> getData() async {
+      await for (final line in stream.stderr.transform(utf8.decoder)) {
+        if (line == "[cli] INFO: User data deleted.") return;
+      }
+
+      throw CommonError.notSuccesful;
     }
 
-    throw CommonError.notSuccesful;
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getData());
   }
 
   @override
-  Future<void> cleanup() async {
+  Future<Result<void>> cleanup() async {
     final stream = await getStream(["cleanup"]);
 
-    await for (final line in stream.stderr.transform(utf8.decoder)) {
-      if (line == "[cli] INFO: Cleanup complete! Removed") return;
+    Future<void> getData() async {
+      await for (final line in stream.stderr.transform(utf8.decoder)) {
+        if (line == "[cli] INFO: Cleanup complete! Removed") return;
+      }
+
+      throw CommonError.notSuccesful;
     }
 
-    throw CommonError.notSuccesful;
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getData());
   }
 
   @override
-  Future<void> import(String appName, String location) async {
+  Future<Result<void>> import(String appName, String location) async {
     final stream = await getStream(["import", appName, location]);
 
-    await for (final line in stream.stderr.transform(utf8.decoder)) {
-      if (line == '[cli] INFO: Game "$appName" has been imported.') return;
-      if (line ==
-          '[cli] ERROR: Could not find "$appName" in list of available games, did you type the name correctly?') {
-        throw CommonError.gameNotExist;
+    Future<void> getData() async {
+      await for (final line in stream.stderr.transform(utf8.decoder)) {
+        if (line == '[cli] INFO: Game "$appName" has been imported.') return;
+        if (line ==
+            '[cli] ERROR: Could not find "$appName" in list of available games, did you type the name correctly?') {
+          throw CommonError.gameNotExist;
+        }
       }
+
+      throw CommonError.notSuccesful;
     }
 
-    throw CommonError.notSuccesful;
+    return Result(
+        stdout: stream.stdout, stderr: stream.stderr, data: getData());
   }
 
   @override
