@@ -1,3 +1,141 @@
+final class MetadataAttribute {
+  final String type;
+  final String value;
+
+  Map<String, dynamic> toJson() => {"type": type, "value": value};
+
+  factory MetadataAttribute.fromJson(Map<String, dynamic> obj) =>
+      MetadataAttribute(type: obj["type"], value: obj["value"]);
+
+  const MetadataAttribute({required this.type, required this.value});
+}
+
+final class MetadataImage {
+  final int width;
+  final int height;
+  final int size;
+  final String md5;
+  final String type;
+  final DateTime uploadedDate;
+  final String url;
+
+  Map<String, dynamic> toJson() => {
+        "width": width,
+        "height": height,
+        "size": size,
+        "md5": md5,
+        "type": type,
+        "uploadedDate": uploadedDate.toIso8601String(),
+        "url": url
+      };
+
+  factory MetadataImage.fromJson(Map<String, dynamic> obj) => MetadataImage(
+      width: obj["width"],
+      height: obj["height"],
+      size: obj["size"],
+      md5: obj["md5"],
+      type: obj["type"],
+      uploadedDate: DateTime.parse(obj["uploadedDate"]),
+      url: obj["url"]);
+
+  const MetadataImage(
+      {required this.width,
+      required this.height,
+      required this.size,
+      required this.md5,
+      required this.type,
+      required this.uploadedDate,
+      required this.url});
+}
+
+final class Metadata {
+  final String applicationId;
+  final DateTime creationDate;
+  final Map<String, MetadataAttribute> customAttributes;
+  final String description;
+  final String developer;
+  final String developerId;
+  final bool endOfSupport;
+  final String entitlementName;
+  final String entitlementType;
+  final List<String> eulaIds;
+  final String id;
+  final String itemType;
+  final List<MetadataImage> keyImages;
+  final DateTime lastModifiedDate;
+  final String namespace;
+  final bool requiresSecureAccount;
+  final String status;
+  final String title;
+  final bool unsearchable;
+
+  Map<String, dynamic> toJson() => {
+        "applicationId": applicationId,
+        "creationDate": creationDate.toIso8601String(),
+        "customAttributes":
+            customAttributes.map((key, value) => MapEntry(key, value.toJson())),
+        "description": description,
+        "developer": developer,
+        "developerId": developerId,
+        "endOfSupport": endOfSupport,
+        "entitlementName": entitlementName,
+        "entitlementType": entitlementType,
+        "eulaIds": eulaIds,
+        "id": id,
+        "itemType": itemType,
+        "keyImages": keyImages.map((e) => e.toJson()),
+        "lastModifiedDate": lastModifiedDate.toIso8601String(),
+        "namespace": namespace,
+        "requiresSecureAccount": requiresSecureAccount,
+        "status": status,
+        "title": title,
+        "unsearchable": unsearchable
+      };
+
+  factory Metadata.fromJson(Map<String, dynamic> obj) => Metadata(
+      applicationId: obj["applicationId"],
+      creationDate: DateTime.parse(obj["creationDate"]),
+      customAttributes: obj["customAttributes"].map(
+          (key, value) => MapEntry(key, MetadataAttribute.fromJson(value))),
+      description: obj["description"],
+      developer: obj["developer"],
+      developerId: obj["developerId"],
+      endOfSupport: obj["endOfSupport"],
+      entitlementName: obj["entitlementName"],
+      entitlementType: obj["entitlementType"],
+      eulaIds: obj["eulaIds"],
+      id: obj["id"],
+      itemType: obj["itemType"],
+      keyImages: obj["keyImages"].map((e) => MetadataImage.fromJson(e)),
+      lastModifiedDate: DateTime.parse(obj["lastModifiedDate"]),
+      namespace: obj["namespace"],
+      requiresSecureAccount: obj["requiresSecureAccount"],
+      status: obj["status"],
+      title: obj["title"],
+      unsearchable: obj["unsearchable"]);
+
+  const Metadata(
+      {required this.applicationId,
+      required this.creationDate,
+      required this.customAttributes,
+      required this.description,
+      required this.developer,
+      required this.developerId,
+      required this.endOfSupport,
+      required this.entitlementName,
+      required this.entitlementType,
+      required this.eulaIds,
+      required this.id,
+      required this.itemType,
+      required this.keyImages,
+      required this.lastModifiedDate,
+      required this.namespace,
+      required this.requiresSecureAccount,
+      required this.status,
+      required this.title,
+      required this.unsearchable});
+}
+
 final class GameAsset {
   final String appName;
   final String assetId;
@@ -5,7 +143,7 @@ final class GameAsset {
   final String catalogItemId;
   final String labelName;
   final String namespace;
-  final Map<String, dynamic> metadata;
+  final Metadata metadata;
 
   Map<String, dynamic> toJson() => {
         "app_name": appName,
@@ -33,7 +171,7 @@ final class GameAsset {
       catalogItemId: catalogItemId,
       labelName: labelName,
       namespace: namespace,
-      metadata: Map<String, dynamic>.from(metadata),
+      metadata: Metadata.fromJson(metadata),
     );
   }
 
