@@ -48,10 +48,28 @@ final class MetadataImage {
       required this.url});
 }
 
+final class MetadataMainGameItem {
+  final String id;
+  final String namespace;
+  final bool unsearchable;
+
+  Map<String, dynamic> toJson() =>
+      {"id": id, "namespace": namespace, "unsearchable": unsearchable};
+
+  factory MetadataMainGameItem.fromJson(Map<String, dynamic> obj) =>
+      MetadataMainGameItem(
+          id: obj["id"],
+          namespace: obj["namespace"],
+          unsearchable: obj["unsearchable"]);
+
+  MetadataMainGameItem(
+      {required this.id, required this.namespace, required this.unsearchable});
+}
+
 final class Metadata {
   final String applicationId;
   final DateTime creationDate;
-  final Map<String, MetadataAttribute> customAttributes;
+  final Map<String, MetadataAttribute?> customAttributes;
   final String description;
   final String developer;
   final String developerId;
@@ -63,6 +81,7 @@ final class Metadata {
   final String itemType;
   final List<MetadataImage> keyImages;
   final DateTime lastModifiedDate;
+  final MetadataMainGameItem? mainGameItem;
   final String namespace;
   final bool requiresSecureAccount;
   final String status;
@@ -85,6 +104,7 @@ final class Metadata {
         "itemType": itemType,
         "keyImages": keyImages.map((e) => e.toJson()),
         "lastModifiedDate": lastModifiedDate.toIso8601String(),
+        "mainGameItem": mainGameItem?.toJson(),
         "namespace": namespace,
         "requiresSecureAccount": requiresSecureAccount,
         "status": status,
@@ -108,6 +128,7 @@ final class Metadata {
       itemType: obj["itemType"],
       keyImages: obj["keyImages"].map((e) => MetadataImage.fromJson(e)),
       lastModifiedDate: DateTime.parse(obj["lastModifiedDate"]),
+      mainGameItem: MetadataMainGameItem.fromJson(obj["mainGameItem"]),
       namespace: obj["namespace"],
       requiresSecureAccount: obj["requiresSecureAccount"],
       status: obj["status"],
@@ -133,7 +154,8 @@ final class Metadata {
       required this.requiresSecureAccount,
       required this.status,
       required this.title,
-      required this.unsearchable});
+      required this.unsearchable,
+      required this.mainGameItem});
 }
 
 final class GameAsset {
@@ -193,19 +215,19 @@ final class Game {
   final List<String> baseURLs;
   final Map<String, dynamic> metadata;
   String? appVersion(String platform) => assetInfos[platform]?.buildVersion;
-  bool get isDLC => metadata["mainGameItem"];
-  String get thirdPartyStore =>
-      metadata["customAttributes"]["ThirdPartyManagedApp"]["value"];
-  String get partnerLinkType =>
-      metadata["customAttributes"]["partnerLinkType"]["value"];
-  String get partnerLinkId =>
-      metadata["customAttributes"]["partnerLinkId"]["value"];
+  bool get isDLC => metadata.mainGameItem == null;
+  String? get thirdPartyStore =>
+      metadata.customAttributes["ThirdPartyManagedApp"]?.value;
+  String? get partnerLinkType =>
+      metadata.customAttributes["partnerLinkType"]?.value;
+  String? get partnerLinkId =>
+      metadata.customAttributes["partnerLinkId"]?.value;
   bool get supportsCloudSaves =>
-      !metadata["customAttributes"]["CloudSaveFolder"];
+      metadata.customAttributes["CloudSaveFolder"] == null;
   bool get supportsMacCloudSaves =>
-      !metadata["customAttributes"]["CloudSaveFolder_MAC"];
-  String get catalogItemId => metadata["id"];
-  String get namespace => metadata["namespace"];
+      metadata.customAttributes["CloudSaveFolder_MAC"] == null;
+  String get catalogItemId => metadata.id;
+  String get namespace => metadata.namespace;
 
   const Game({
     required this.appName,
