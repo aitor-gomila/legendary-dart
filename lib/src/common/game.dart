@@ -329,21 +329,6 @@ extension InstalledGameList on List<InstalledGame> {
       list.map<InstalledGame>((obj) => InstalledGame.fromJson(obj)).toList();
 }
 
-final class SaveGameFile {
-  final String appName;
-  final String fileName;
-  final String manifestName;
-  final DateTime? dateTime;
-
-  const SaveGameFile(
-      {required this.appName,
-      required this.fileName,
-      required this.manifestName,
-      this.dateTime});
-}
-
-enum SaveGameStatus { localNewer, remoteNewer, sameAge, noSave }
-
 final class LaunchParameters {
   final List<String> gameParameters;
   final String gameExecutable;
