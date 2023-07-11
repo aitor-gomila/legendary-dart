@@ -177,25 +177,15 @@ final class GameAsset {
         "metadata": metadata
       };
 
-  factory GameAsset.fromJson(Map<String, dynamic> obj) {
-    final appName = obj["app_name"];
-    final assetId = obj["asset_id"];
-    final buildVersion = obj["build_version"];
-    final catalogItemId = obj["catalog_item_id"];
-    final labelName = obj["label_name"];
-    final namespace = obj["namespace"];
-    final metadata = obj["metadata"];
-
-    return GameAsset(
-      appName: appName,
-      assetId: assetId,
-      buildVersion: buildVersion,
-      catalogItemId: catalogItemId,
-      labelName: labelName,
-      namespace: namespace,
-      metadata: Metadata.fromJson(metadata),
-    );
-  }
+  factory GameAsset.fromJson(Map<String, dynamic> obj) => GameAsset(
+        appName: obj["app_name"],
+        assetId: obj["asset_id"],
+        buildVersion: obj["build_version"],
+        catalogItemId: obj["catalog_item_id"],
+        labelName: obj["label_name"],
+        namespace: obj["namespace"],
+        metadata: Map<String, dynamic>.from(obj["metadata"]),
+      );
 
   const GameAsset({
     required this.appName,
