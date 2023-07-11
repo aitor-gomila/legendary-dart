@@ -165,7 +165,7 @@ final class GameAsset {
   final String catalogItemId;
   final String labelName;
   final String namespace;
-  final Metadata metadata;
+  final Map<String, dynamic> metadata;
 
   Map<String, dynamic> toJson() => {
         "app_name": appName,
@@ -213,7 +213,7 @@ final class Game {
   final String appTitle;
   final Map<String, GameAsset> assetInfos;
   final List<String> baseURLs;
-  final Map<String, dynamic> metadata;
+  final Metadata metadata;
   String? appVersion(String platform) => assetInfos[platform]?.buildVersion;
   bool get isDLC => metadata.mainGameItem == null;
   String? get thirdPartyStore =>
