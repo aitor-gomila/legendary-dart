@@ -224,26 +224,15 @@ final class Game {
         "metadata": metadata,
       };
 
-  factory Game.fromJson(Map<String, dynamic> obj) {
-    final appName = obj["app_name"];
-    final appTitle = obj["app_title"];
-    final assetInfos = obj["asset_infos"];
-
-    Map<String, GameAsset> typedAssetInfos = assetInfos.map<String, GameAsset>(
-        (String key, dynamic asset) =>
-            MapEntry(key, GameAsset.fromJson(asset)));
-
-    final baseURLs = obj["base_urls"];
-    final metadata = obj["metadata"];
-
-    return Game(
-      appName: appName,
-      appTitle: appTitle,
-      assetInfos: typedAssetInfos,
-      baseURLs: List<String>.from(baseURLs),
-      metadata: Map<String, dynamic>.from(metadata),
-    );
-  }
+  factory Game.fromJson(Map<String, dynamic> obj) => Game(
+        appName: obj["app_name"],
+        appTitle: obj["app_title"],
+        assetInfos: obj["asset_infos"].map<String, GameAsset>(
+            (String key, dynamic asset) =>
+                MapEntry(key, GameAsset.fromJson(asset))),
+        baseURLs: List<String>.from(obj["base_urls"]),
+        metadata: Metadata.fromJson(obj["metadata"]),
+      );
 }
 
 extension GameList on List<Game> {
@@ -293,47 +282,26 @@ final class InstalledGame {
         "save_path": savePath
       };
 
-  factory InstalledGame.fromJson(Map<String, dynamic> obj) {
-    final appName = obj["app_name"];
-    final installPath = obj["install_path"];
-    final title = obj["title"];
-    final version = obj["version"];
-    final baseURLs = obj["base_urls"];
-    final canRunOffline = obj["can_run_offline"];
-    final eglGuid = obj["egl_guid"];
-    final executable = obj["executable"];
-    final installSize = obj["install_size"];
-    final installTags = obj["install_tags"];
-    final isDLC = obj["is_dlc"];
-    final launchParameters = obj["launch_parameters"];
-    final manifestPath = obj["manifest_path"];
-    final needsVerification = obj["needs_verification"];
-    final platform = obj["platform"];
-    final prereqInfo = obj["prereq_info"];
-    final requiresOt = obj["requires_ot"];
-    final savePath = obj["save_path"];
-
-    return InstalledGame(
-      appName: appName,
-      installPath: installPath,
-      title: title,
-      version: version,
-      baseURLs: List<String>.from(baseURLs),
-      canRunOffline: canRunOffline,
-      eglGuid: eglGuid,
-      executable: executable,
-      installSize: installSize,
-      installTags: List<String>.from(installTags),
-      isDLC: isDLC,
-      launchParameters: launchParameters,
-      manifestPath: manifestPath,
-      needsVerification: needsVerification,
-      platform: platform,
-      prereqInfo: prereqInfo,
-      requiresOt: requiresOt,
-      savePath: savePath,
-    );
-  }
+  factory InstalledGame.fromJson(Map<String, dynamic> obj) => InstalledGame(
+        appName: obj["app_name"],
+        installPath: obj["install_path"],
+        title: obj["title"],
+        version: obj["version"],
+        baseURLs: List<String>.from(obj["base_urls"]),
+        canRunOffline: obj["can_run_offline"],
+        eglGuid: obj["egl_guid"],
+        executable: obj["executable"],
+        installSize: obj["install_size"],
+        installTags: List<String>.from(obj["install_tags"]),
+        isDLC: obj["is_dlc"],
+        launchParameters: obj["launch_parameters"],
+        manifestPath: obj["manifest_path"],
+        needsVerification: obj["needs_verification"],
+        platform: obj["platform"],
+        prereqInfo: obj["prereq_info"],
+        requiresOt: obj["requires_ot"],
+        savePath: obj["save_path"],
+      );
 
   const InstalledGame(
       {required this.appName,
@@ -401,30 +369,18 @@ final class LaunchParameters {
         "pre_launch_wait": preLaunchWait
       };
 
-  factory LaunchParameters.fromJson(Map<String, dynamic> obj) {
-    final gameParameters = obj["game_parameters"];
-    final gameExecutable = obj["game_executable"];
-    final gameDirectory = obj["game_directory"];
-    final eglParameters = obj["egl_parameters"];
-    final launchCommand = obj["launch_command"];
-    final workingDirectory = obj["working_directory"];
-    final userParameters = obj["user_parameters"];
-    final environment = obj["environment"];
-    final preLaunchCommand = obj["pre_launch_command"];
-    final preLaunchWait = obj["pre_launch_wait"];
-
-    return LaunchParameters(
-        gameParameters: List<String>.from(gameParameters),
-        gameExecutable: gameExecutable,
-        gameDirectory: gameDirectory,
-        eglParameters: List<String>.from(eglParameters),
-        launchCommand: List<String>.from(launchCommand),
-        workingDirectory: workingDirectory,
-        userParameters: List<String>.from(userParameters),
-        environment: Map<String, String>.from(environment),
-        preLaunchCommand: preLaunchCommand,
-        preLaunchWait: preLaunchWait);
-  }
+  factory LaunchParameters.fromJson(Map<String, dynamic> obj) =>
+      LaunchParameters(
+          gameParameters: List<String>.from(obj["game_parameters"]),
+          gameExecutable: obj["game_executable"],
+          gameDirectory: obj["game_directory"],
+          eglParameters: List<String>.from(obj["egl_parameters"]),
+          launchCommand: List<String>.from(obj["launch_command"]),
+          workingDirectory: obj["working_directory"],
+          userParameters: List<String>.from(obj["user_parameters"]),
+          environment: Map<String, String>.from(obj["environment"]),
+          preLaunchCommand: obj["pre_launch_command"],
+          preLaunchWait: obj["pre_launch_wait"]);
 
   const LaunchParameters(
       {required this.gameParameters,
