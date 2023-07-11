@@ -91,8 +91,8 @@ final class Metadata {
   Map<String, dynamic> toJson() => {
         "applicationId": applicationId,
         "creationDate": creationDate.toIso8601String(),
-        "customAttributes":
-            customAttributes.map((key, value) => MapEntry(key, value.toJson())),
+        "customAttributes": customAttributes
+            .map((key, value) => MapEntry(key, value?.toJson())),
         "description": description,
         "developer": developer,
         "developerId": developerId,
