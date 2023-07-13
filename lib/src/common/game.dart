@@ -266,7 +266,7 @@ final class InstalledGame {
   final List<String> installTags;
   final bool isDLC;
   final String launchParameters;
-  final String manifestPath;
+  final String? manifestPath;
   final bool needsVerification;
   final String platform;
   final Map<String, dynamic>? prereqInfo;
