@@ -328,7 +328,7 @@ final class InstalledGame {
       required this.installTags,
       required this.isDLC,
       required this.launchParameters,
-      required this.manifestPath,
+      this.manifestPath,
       required this.needsVerification,
       required this.platform,
       this.prereqInfo,
