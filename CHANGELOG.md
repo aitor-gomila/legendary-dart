@@ -1,6 +1,7 @@
 # 0.1.2
 
 - **BREAKING:** made methods `move`, `uninstall`, `setLogin`, `deleteLogin`, `cleanup`, `import`, `status`, `info`, `list` and `listInstalled` use `Result`. Now, to to use them, you must `info = await client.info()` and then `await info.data`, or `await (await client.info()).data`
+- **BREAKING:** implemented `Game.metadata` type so you can safely access the type.
 
 # 0.1.1
 
